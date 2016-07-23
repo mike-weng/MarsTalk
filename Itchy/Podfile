@@ -1,0 +1,19 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+target "MarsTalk" do
+	pod 'ParseFacebookUtilsV4'
+	pod "PubNub"
+	pod "Parse"
+	pod 'SkyFloatingLabelTextField'
+	pod 'SSBouncyButton'
+	pod 'MaterialKit'
+	pod 'Presentr'
+	pod 'SCLAlertView'
+	pod 'SVProgressHUD'
+	pod 'RAMAnimatedTabBarController'
+	pod 'KYGooeyMenu', '~> 1.0.5'
+	pod 'FoldingTabBar'
+	pod "RMPZoomTransitionAnimator"
+	pod 'DisplaySwitcher'
+end
