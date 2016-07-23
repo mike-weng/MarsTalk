@@ -7,7 +7,6 @@
 
 #import "CAAnimation+YALTabBarViewAnimations.h"
 #import "CATransaction+TransactionWithAnimationsAndCompletion.h"
-#import "YALGooeyMenu.h"
 
 typedef NS_ENUM(NSUInteger, YALAnimatingState) {
     YALAnimatingStateCollapsing,
@@ -293,35 +292,14 @@ typedef NS_ENUM(NSUInteger, YALAnimatingState) {
 }
 
 - (void)setupExtraTabBarItems {
-    if (self.gooeyLeft) {
-        printf("xx\n");
-        YALGooeyMenu *gooeyMenu = [[YALGooeyMenu alloc] initWithOrigin:CGPointMake(0.0f, CGRectGetMidY(self.mainView.frame) - CGRectGetHeight(self.mainView.frame) / 2.f) andDiameter:self.extraTabBarItemHeight andDelegate:self themeColor:[UIColor blackColor] mainMenuImage:[UIImage imageNamed:@"NewChatIcon"]];
-        gooeyMenu.offsetForGooeyMenu = 24;
-        gooeyMenu.menuDelegate = self;
-        gooeyMenu.radius = 20;
-        gooeyMenu.extraDistance = 5;
-        gooeyMenu.MenuCount = 3;
-        gooeyMenu.menuImagesArray = [NSMutableArray arrayWithObjects:[UIImage imageNamed:@"ShakeIcon"], [UIImage imageNamed:@"QRCodeIcon"], [UIImage imageNamed:@"SearchIcon"], nil];
-
-        self.extraLeftButton = gooeyMenu;
-        self.extraLeftButton.center = CGPointMake( - CGRectGetWidth(self.extraLeftButton.frame) / 2, self.mainView.center.y);
-        self.extraLeftButton.backgroundColor = self.tabBarColor;
-        self.extraLeftButton.layer.cornerRadius = CGRectGetWidth(self.extraLeftButton.frame) / 2.f;
-        self.extraLeftButton.layer.masksToBounds = YES;
-        
-//        [self.extraLeftButton addTarget:self action:@selector(didPressExtraLeftButton:) forControlEvents:UIControlEventTouchUpInside];
-        self.extraLeftButton.hidden = YES;
-        
-    } else {
-        self.extraLeftButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, CGRectGetMidY(self.mainView.frame) - CGRectGetHeight(self.mainView.frame) / 2.f, self.extraTabBarItemHeight, self.extraTabBarItemHeight)];
-        self.extraLeftButton.center = CGPointMake( - CGRectGetWidth(self.extraLeftButton.frame) / 2, self.mainView.center.y);
-        self.extraLeftButton.backgroundColor = self.tabBarColor;
-        self.extraLeftButton.layer.cornerRadius = CGRectGetWidth(self.extraLeftButton.frame) / 2.f;
-        self.extraLeftButton.layer.masksToBounds = YES;
-        
-        [self.extraLeftButton addTarget:self action:@selector(didPressExtraLeftButton:) forControlEvents:UIControlEventTouchUpInside];
-        self.extraLeftButton.hidden = YES;
-    }
+    self.extraLeftButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, CGRectGetMidY(self.mainView.frame) - CGRectGetHeight(self.mainView.frame) / 2.f, self.extraTabBarItemHeight, self.extraTabBarItemHeight)];
+    self.extraLeftButton.center = CGPointMake( - CGRectGetWidth(self.extraLeftButton.frame) / 2, self.mainView.center.y);
+    self.extraLeftButton.backgroundColor = self.tabBarColor;
+    self.extraLeftButton.layer.cornerRadius = CGRectGetWidth(self.extraLeftButton.frame) / 2.f;
+    self.extraLeftButton.layer.masksToBounds = YES;
+    
+    [self.extraLeftButton addTarget:self action:@selector(didPressExtraLeftButton:) forControlEvents:UIControlEventTouchUpInside];
+    self.extraLeftButton.hidden = YES;
     [self addSubview:self.extraLeftButton];
     
     self.extraRightButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) - CGRectGetWidth(self.centerButton.frame), CGRectGetMidY(self.mainView.frame) - CGRectGetHeight(self.mainView.frame) / 2.f, self.extraTabBarItemHeight, self.extraTabBarItemHeight)];

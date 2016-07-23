@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "982951FC1666E118B1E9D203CE0FEDC2"
+               BlueprintIdentifier = "34055D80643ABAA419E1A4446AF6B7AA"
                BuildableName = "UIImage_BetterAdditions.framework"
                BlueprintName = "UIImage+BetterAdditions"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "982951FC1666E118B1E9D203CE0FEDC2"
+            BlueprintIdentifier = "34055D80643ABAA419E1A4446AF6B7AA"
             BuildableName = "UIImage_BetterAdditions.framework"
             BlueprintName = "UIImage+BetterAdditions"
             ReferencedContainer = "container:Pods.xcodeproj">

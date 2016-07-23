@@ -49,8 +49,7 @@ typedef NS_ENUM(NSUInteger, YALTabBarState) {
 @property (nonatomic, assign) UIEdgeInsets tabBarItemsEdgeInsets;
 @property (nonatomic, assign) CGFloat extraTabBarItemHeight;
 @property (nonatomic, assign) CGFloat offsetForExtraTabBarItems;
-@property (nonatomic, assign) BOOL gooeyLeft;
-@property (nonatomic, assign) BOOL gooeyRight;
+
 
 - (void)setExtraLeftTabBarButtonImage:(UIImage *)image index:(int)index;
 - (void)setExtraRightTabBarButtonImage: (UIImage *)image index:(int) index;

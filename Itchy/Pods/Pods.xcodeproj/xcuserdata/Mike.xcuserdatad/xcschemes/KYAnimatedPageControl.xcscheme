@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'A706FE7D90976C0A775C53E4BC69BA8D'
-               BlueprintName = 'PubNub'
+               BlueprintIdentifier = 'FE632A2759E2FF0733D3DA467A468C6A'
+               BlueprintName = 'KYAnimatedPageControl'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'PubNub.framework'>
+               BuildableName = 'KYAnimatedPageControl.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

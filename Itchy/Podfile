@@ -16,4 +16,6 @@ target "MarsTalk" do
 	pod 'FoldingTabBar'
 	pod "RMPZoomTransitionAnimator"
 	pod 'DisplaySwitcher'
+	pod 'KYAnimatedPageControl', '~> 1.0.5'
+
 end

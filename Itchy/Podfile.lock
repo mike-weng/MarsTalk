@@ -20,6 +20,7 @@ PODS:
   - FBSDKLoginKit (4.14.0):
     - FBSDKCoreKit
   - FoldingTabBar (1.0.4)
+  - KYAnimatedPageControl (1.0.5)
   - KYGooeyMenu (1.0.5)
   - MaterialKit (0.4)
   - Parse (1.14.2):
@@ -51,6 +52,7 @@ PODS:
 DEPENDENCIES:
   - DisplaySwitcher
   - FoldingTabBar
+  - KYAnimatedPageControl (~> 1.0.5)
   - KYGooeyMenu (~> 1.0.5)
   - MaterialKit
   - Parse
@@ -72,6 +74,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
   FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
   FoldingTabBar: 0b099ae881bb5e009eb5f893aba2d6d8d8a066a2
+  KYAnimatedPageControl: 4b6360b6ed2cad47b757aa11e8903827d2cd2385
   KYGooeyMenu: 3d9f3504b59a5dd1b6c4ff34a06836284647a2aa
   MaterialKit: 2e5267bcf410b82793f2b92d2111f8ae4ed2c3f2
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
@@ -87,6 +90,6 @@ SPEC CHECKSUMS:
   UIColor-Hex: 77e80f383c6b3a63c5e95a9a4a7f4a71976e38a5
   UIImage+BetterAdditions: 185cbe06059747dd4a65562c1b0c560e761d030c
 
-PODFILE CHECKSUM: dc3baf0a3e8f1a5c0cac8ed8847ccc9617665833
+PODFILE CHECKSUM: ead19e5a2189c359a010d27a70ce633a52dfd859
 
 COCOAPODS: 1.0.1

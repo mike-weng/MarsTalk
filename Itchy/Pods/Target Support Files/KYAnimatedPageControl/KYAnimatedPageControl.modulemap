@@ -1,0 +1,6 @@
+framework module KYAnimatedPageControl {
+  umbrella header "KYAnimatedPageControl-umbrella.h"
+
+  export *
+  module * { export * }
+}
