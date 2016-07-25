@@ -12,6 +12,7 @@
 #import <SSBouncyButton/SSBouncyButton.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <FoldingTabBar/FoldingTabBar.h>
+#import <KYAnimatedPageControl/KYAnimatedPageControl.h>
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>

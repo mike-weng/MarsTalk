@@ -25,6 +25,8 @@ class AlertController: NSObject {
     }()
     
     var activityIndicator: MKActivityIndicator = MKActivityIndicator()
+    var indicatorBackView: UIView!
+
     
     static let sharedInstance = AlertController()
 
@@ -55,11 +57,11 @@ class AlertController: NSObject {
     func startNormalActivityIndicator(target: UIViewController) {
         let width = UIScreen.mainScreen().bounds.size.width
         let height = UIScreen.mainScreen().bounds.size.height
-        let backView = UIView(frame: CGRectMake(0, 0, width, height))
-        backView.backgroundColor = UIColor.blackColor()
-        backView.alpha = 0.5
         activityIndicator.center = target.view.center
-        target.view.addSubview(backView)
+        indicatorBackView = UIView(frame: CGRectMake(0, 0, width, height))
+        indicatorBackView.backgroundColor = UIColor.blackColor()
+        indicatorBackView.alpha = 0.5
+        target.view.addSubview(indicatorBackView)
         target.view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
@@ -67,6 +69,7 @@ class AlertController: NSObject {
     
     func stopNormalActivityIndicator() {
         self.activityIndicator.stopAnimating()
+        indicatorBackView.alpha = 0
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
     }
     

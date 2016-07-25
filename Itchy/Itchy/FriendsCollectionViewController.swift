@@ -27,6 +27,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     private lazy var gridLayout = BaseLayout(staticCellHeight: gridLayoutStaticCellHeight, nextLayoutStaticCellHeight: listLayoutStaticCellHeight, layoutState: .GridLayoutState)
     private var layoutState: CollectionViewLayoutState = .ListLayoutState
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    var friendList: [PFObject] = [PFObject]()
     
     var gooeyMenu: KYGooeyMenu!
     let presenter: Presentr = {
@@ -49,6 +50,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
         super.viewWillAppear(animated)
         gooeyMenu.mainView.hidden = false
         gooeyMenu.showRightGooeyMenu()
+        self.loadFriendsList()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -119,6 +121,9 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     }
     
     @IBAction func transformButtonTouchUp(sender: AnyObject) {
+        if self.friendList.isEmpty {
+            return
+        }
         if !isTransitionAvailable {
             return
         }
@@ -138,19 +143,36 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return self.friendList.count
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         selectedIndexPath = indexPath
         let detailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
         self.navigationController?.pushViewController(detailViewController, animated: true)
-//                self.customPresentViewController(presenter, viewController: detailViewController, animated: true, completion: nil)
         self.collectionView.deselectItemAtIndexPath(indexPath, animated: true)
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("FriendsCollectionViewCell", forIndexPath: indexPath) as! FriendsCollectionViewCell
+        let friend = friendList[indexPath.item] as! PFUser
+        let firstName = friend["firstName"] as! String
+        let lastName = friend["lastName"] as! String
+        cell.nameListLabel.text = firstName + " " + lastName
+        cell.nameGridLabel.text = firstName + " " + lastName
+        cell.statisticLabel.text = friend["userID"] as? String
+        
+        if let profileImage = friend["profileImage"] {
+            let imageFile = profileImage as! PFFile
+            imageFile.getDataInBackgroundWithBlock { (result, error) -> Void in
+                if let imageData = result {
+                    cell.avatarImageView!.image = UIImage(data: imageData)
+                } else {
+                    AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Ok", viewController: self)
+                }
+            }
+        }
+        
         if layoutState == .GridLayoutState {
             cell.setupGridLayoutConstraints(1, cellWidth: cell.frame.width)
         } else {
@@ -179,10 +201,10 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
         view.endEditing(true)
     }
     
-    func tabBarDidSelectExtraRightItem(tabBar: YALFoldingTabBar!) {
-        //Add new friend
-    }
     func tabBarDidSelectExtraLeftItem(tabBar: YALFoldingTabBar!) {
+        if friendList.isEmpty {
+            return
+        }
         //Rotate
         if !isTransitionAvailable {
             return
@@ -239,5 +261,20 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
             print("nono")
         }
     }
-    
+    func loadFriendsList() {
+//        AlertController.sharedInstance.startNormalActivityIndicator(self)
+        let relation = PFUser.currentUser()!.relationForKey("friends")
+        let query = relation.query()
+        query.findObjectsInBackgroundWithBlock({ (result, error) -> Void in
+            if let result = result {
+                self.friendList = result
+                self.collectionView.reloadData()
+            } else {
+                AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
+            }
+//            AlertController.sharedInstance.stopNormalActivityIndicator()
+        })
+
+    }
+
 }

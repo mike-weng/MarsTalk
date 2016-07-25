@@ -51,6 +51,9 @@ typedef enum : NSUInteger {
 @property(nonatomic,strong)Indicator *indicator;
 
 
+
+
+
 //-----READONLY-----
 //直线Layer
 @property(nonatomic,readonly)Line *pageControlLine;

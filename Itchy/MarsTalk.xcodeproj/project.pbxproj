@@ -19,6 +19,7 @@
 		2765114F1D3FEAF300A2C4F2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2765114E1D3FEAF300A2C4F2 /* DetailViewController.swift */; };
 		276511511D3FEBFF00A2C4F2 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276511501D3FEBFF00A2C4F2 /* NavigationController.swift */; };
 		277E70951D23A631002BD576 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277E70941D23A631002BD576 /* LoginViewController.swift */; };
+		27A2A7661D4410BD009E33DD /* ProfileImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A2A7651D4410BD009E33DD /* ProfileImageCollectionViewCell.swift */; };
 		27D2BA1C1D3E239B00706600 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D2BA1B1D3E239A00706600 /* AlertController.swift */; };
 		27D2BA1E1D3E3C3600706600 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D2BA1D1D3E3C3600706600 /* SignupViewController.swift */; };
 		27D2BA201D3E3C4500706600 /* VerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D2BA1F1D3E3C4500706600 /* VerificationViewController.swift */; };
@@ -72,6 +73,7 @@
 		277E70991D23B491002BD576 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "Pods/../build/Debug-iphoneos/CocoaLumberjack/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		277E709A1D23B491002BD576 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = "Pods/../build/Debug-iphoneos/Parse/Parse.framework"; sourceTree = "<group>"; };
 		277E709B1D23B491002BD576 /* PubNub.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PubNub.framework; path = "Pods/../build/Debug-iphoneos/PubNub/PubNub.framework"; sourceTree = "<group>"; };
+		27A2A7651D4410BD009E33DD /* ProfileImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		27D2BA1B1D3E239A00706600 /* AlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		27D2BA1D1D3E3C3600706600 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		27D2BA1F1D3E3C4500706600 /* VerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationViewController.swift; sourceTree = "<group>"; };
@@ -126,9 +128,10 @@
 			isa = PBXGroup;
 			children = (
 				2765114C1D3FD5EB00A2C4F2 /* FriendsCollectionViewController.swift */,
-				2765114E1D3FEAF300A2C4F2 /* DetailViewController.swift */,
-				27002D081D425D0B0097A54A /* SearchIDViewController.swift */,
 				27D4E81F1D40D7880017A881 /* FriendsCollectionViewCell.swift */,
+				2765114E1D3FEAF300A2C4F2 /* DetailViewController.swift */,
+				27A2A7651D4410BD009E33DD /* ProfileImageCollectionViewCell.swift */,
+				27002D081D425D0B0097A54A /* SearchIDViewController.swift */,
 				2749D36A1D40DB410072BCEC /* CellInterface.swift */,
 				2749D3661D40DA480072BCEC /* FriendsCollectionViewCell.xib */,
 			);
@@ -503,6 +506,7 @@
 				2720E4B61D2A513900956E54 /* KeyboardController.swift in Sources */,
 				2749D3691D40DB2F0072BCEC /* User.swift in Sources */,
 				27E3D4E91D22A19500D2C5E2 /* AppDelegate.swift in Sources */,
+				27A2A7661D4410BD009E33DD /* ProfileImageCollectionViewCell.swift in Sources */,
 				27D2BA1C1D3E239B00706600 /* AlertController.swift in Sources */,
 				2765114F1D3FEAF300A2C4F2 /* DetailViewController.swift in Sources */,
 			);

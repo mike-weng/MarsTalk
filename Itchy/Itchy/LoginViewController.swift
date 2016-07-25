@@ -42,10 +42,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if PFUser.currentUser()?.objectId != nil {
-            //            Convenience.currentUser = PFUser.currentUser()
-            self.presentViewController(appDelegate.tabBarController, animated: true, completion: nil)
-        }
+//        if PFUser.currentUser()?.objectId != nil {
+//            //            Convenience.currentUser = PFUser.currentUser()
+//            self.presentViewController(appDelegate.tabBarController, animated: true, completion: nil)
+//        }
         
     }
     
@@ -64,6 +64,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 //                    Convenience.currentUser = user
 //                    self.appDelegate.configuration?.uuid = Convenience.currentUser.objectId!
 //                    let tabBarController = self.initializeFoldingTabBarController()
+                    
+                    // bind push installation to user
+                    let currentInstallation = PFInstallation.currentInstallation()!
+                    currentInstallation["user"] = user
+                    currentInstallation.saveInBackground()
+                    print("binded")
+                    
                     self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
                 } else {
                     let errorMsg = error!.userInfo["error"] as? String
@@ -79,16 +86,59 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         PFFacebookUtils.logInInBackgroundWithReadPermissions(permission) { (user, error) -> Void in
             if let user = user {
                 if user.isNew {
-                    //                    self.getFBUserInfo()
+                    self.getFBUserInfo()
                 }
                 //                Convenience.currentUser = user
-//                let tabBarController = self.initializeFoldingTabBarController()
+                
+                // bind push installation to user
+                let currentInstallation = PFInstallation.currentInstallation()!
+                currentInstallation["user"] = user
+                currentInstallation.saveInBackground()
+                print("binded")
+                
                 self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
             } else {
                 let errorMsg = error!.userInfo["error"] as? String
                 AlertController.sharedInstance.showOneActionAlert("Login Failed", body: errorMsg!, actionTitle: "Ok", viewController: self)
             }
             AlertController.sharedInstance.stopNormalActivityIndicator()
+        }
+    }
+    
+    func getFBUserInfo() {
+        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields" : "first_name, last_name, email"])
+        graphRequest.startWithCompletionHandler { (connection, result, error) in
+            if let result = result as? [String:String] {
+                let currentUser: PFUser = PFUser.currentUser()!
+                currentUser["firstName"] = result["first_name"]
+                currentUser["lastName"] = result["last_name"]
+                currentUser["email"] = result["email"]
+                let userID = result["id"]
+                self.getFBProfileImage(userID!)
+                print(currentUser["profileImage"])
+                
+                currentUser.saveInBackgroundWithBlock({ (success, error) -> Void in
+                    if success {
+                        print("success save")
+                    } else {
+                        AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
+                    }
+                })
+            } else {
+                AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
+            }
+        }
+
+    }
+    func getFBProfileImage(userID: String) {
+        let urlString = "https://graph.facebook.com/" + userID + "/picture?type=large"
+        if let url = NSURL(string: urlString) {
+            if let data = NSData(contentsOfURL: url) {
+                if let file = PFFile(data: data) {
+                    let currentUser: PFUser = PFUser.currentUser()!
+                    currentUser["profileImage"] = file
+                }
+            }
         }
     }
     
