@@ -17,5 +17,6 @@ target "MarsTalk" do
 	pod "RMPZoomTransitionAnimator"
 	pod 'DisplaySwitcher'
 	pod 'KYAnimatedPageControl', '~> 1.0.5'
+	pod 'JSQMessagesViewController'
 
 end

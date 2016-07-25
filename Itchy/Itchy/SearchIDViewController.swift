@@ -65,7 +65,7 @@ class SearchIDViewController: UIViewController, YALTabBarDelegate, UISearchBarDe
                 let data = [
                     "alert" : message,
                     "badge" : "Increment",
-                    "sounds" : "default"
+                    "sounds" : "Default"
                 ]
                 let push = PFPush()
                 push.setQuery(pushQuery)

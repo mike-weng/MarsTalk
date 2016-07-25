@@ -13,6 +13,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <FoldingTabBar/FoldingTabBar.h>
 #import <KYAnimatedPageControl/KYAnimatedPageControl.h>
+#import <JSQMessagesViewController/JSQMessages.h>
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>

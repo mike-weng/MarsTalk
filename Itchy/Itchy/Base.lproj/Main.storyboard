@@ -981,7 +981,7 @@
         <!--Chats-->
         <scene sceneID="bIo-c5-pph">
             <objects>
-                <viewController id="aGC-rw-Heh" sceneMemberID="viewController">
+                <viewController id="aGC-rw-Heh" customClass="JSQMessagesViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7Zx-PZ-oh0"/>
                         <viewControllerLayoutGuide type="bottom" id="VZ9-NR-rOe"/>
