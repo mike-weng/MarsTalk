@@ -12,7 +12,7 @@ import UIKit
  A beautiful and flexible textfield implementation with support for icon, title label, error message and placeholder.
  */
 public class SkyFloatingLabelTextFieldWithIcon: SkyFloatingLabelTextField {
-
+    
     /// A UILabel value that identifies the label used to display the icon
     public var iconLabel:UILabel!
     
@@ -81,9 +81,9 @@ public class SkyFloatingLabelTextFieldWithIcon: SkyFloatingLabelTextField {
     // MARK: Initializers
     
     /**
-    Initializes the control
-    - parameter frame the frame of the control
-    */
+     Initializes the control
+     - parameter frame the frame of the control
+     */
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.createIconLabel()
@@ -131,10 +131,10 @@ public class SkyFloatingLabelTextFieldWithIcon: SkyFloatingLabelTextField {
     // MARK: Custom layout overrides
     
     /**
-    Calculate the bounds for the textfield component of the control. Override to create a custom size textbox in the control.    
-    - parameter bounds: The current bounds of the textfield component
-    - returns: The rectangle that the textfield component should render in
-    */
+     Calculate the bounds for the textfield component of the control. Override to create a custom size textbox in the control.
+     - parameter bounds: The current bounds of the textfield component
+     - returns: The rectangle that the textfield component should render in
+     */
     override public func textRectForBounds(bounds: CGRect) -> CGRect {
         var rect = super.textRectForBounds(bounds)
         if isLTRLanguage {
@@ -145,7 +145,7 @@ public class SkyFloatingLabelTextFieldWithIcon: SkyFloatingLabelTextField {
         rect.size.width -= CGFloat(iconWidth + iconMarginLeft)
         return rect
     }
-
+    
     /**
      Calculate the rectangle for the textfield when it is being edited
      - parameter bounds: The current bounds of the field
@@ -161,7 +161,7 @@ public class SkyFloatingLabelTextFieldWithIcon: SkyFloatingLabelTextField {
         rect.size.width -= CGFloat(iconWidth + iconMarginLeft)
         return rect
     }
-
+    
     /**
      Calculates the bounds for the placeholder component of the control. Override to create a custom size textbox in the control.
      - parameter bounds: The current bounds of the placeholder component

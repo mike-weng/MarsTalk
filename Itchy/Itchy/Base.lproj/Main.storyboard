@@ -62,6 +62,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
                                         <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="rippleEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="HaE-wR-Vpy" customClass="SkyFloatingLabelTextFieldWithIcon" customModule="SkyFloatingLabelTextField">
@@ -84,6 +85,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
                                         <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="rippleEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="---------------- Or Sign in with -----------------" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MO0-bv-eKZ">
@@ -128,7 +130,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="GalaxyBackground1" translatesAutoresizingMaskIntoConstraints="NO" id="ddx-Pe-OMH">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="1" width="375" height="667"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                         </subviews>
@@ -185,6 +187,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="textColor">
                                         <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="rippleEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZJr-VM-CTk" customClass="SSBouncyButton">
@@ -219,6 +222,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                         <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="rippleEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q3K-A7-uY8" customClass="SkyFloatingLabelTextFieldWithIcon" customModule="SkyFloatingLabelTextField">
@@ -638,7 +642,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Friends" id="O6h-aE-V84">
-                        <barButtonItem key="rightBarButtonItem" width="60" style="plain" id="0xT-iA-WAh">
+                        <barButtonItem key="rightBarButtonItem" width="60" id="0xT-iA-WAh">
                             <view key="customView" contentMode="scaleToFill" id="ejH-kn-LnA" userLabel="Container View">
                                 <rect key="frame" x="288" y="5" width="71" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -681,8 +685,8 @@
                     <connections>
                         <outlet property="collectionView" destination="nR6-QP-4Gw" id="V3Z-rb-gJt"/>
                         <outlet property="rotationButton" destination="foJ-Uf-aL7" id="dzE-VB-ec9"/>
-                        <segue destination="cGi-yg-qkh" kind="show" id="RYP-fL-YFk"/>
-                        <segue destination="YSq-H6-hai" kind="show" id="FYF-dt-H7M"/>
+                        <segue destination="cGi-yg-qkh" kind="show" identifier="detailSegue" id="RYP-fL-YFk"/>
+                        <segue destination="YSq-H6-hai" kind="show" identifier="searchIDSegue" id="FYF-dt-H7M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PDA-RL-x1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
