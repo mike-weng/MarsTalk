@@ -20,6 +20,14 @@
 		276511511D3FEBFF00A2C4F2 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276511501D3FEBFF00A2C4F2 /* NavigationController.swift */; };
 		277E70951D23A631002BD576 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277E70941D23A631002BD576 /* LoginViewController.swift */; };
 		27A2A7661D4410BD009E33DD /* ProfileImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A2A7651D4410BD009E33DD /* ProfileImageCollectionViewCell.swift */; };
+		27CC4BBD1D6CCAAC00D77ECB /* NSUserData + Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CC4BBC1D6CCAAC00D77ECB /* NSUserData + Settings.swift */; };
+		27CC4BBF1D6CCFC300D77ECB /* DemoModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CC4BBE1D6CCFC300D77ECB /* DemoModelData.swift */; };
+		27CC4BD91D6CDB2300D77ECB /* DemoConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CC4BD51D6CDB2300D77ECB /* DemoConversation.swift */; };
+		27CC4BDA1D6CDB2300D77ECB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CC4BD61D6CDB2300D77ECB /* ChatViewController.swift */; };
+		27CC4BDB1D6CDB2300D77ECB /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CC4BD71D6CDB2300D77ECB /* Conversation.swift */; };
+		27CC4BDC1D6CDB2300D77ECB /* InitalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CC4BD81D6CDB2300D77ECB /* InitalTableViewController.swift */; };
+		27CC4BEC1D6CDD0A00D77ECB /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CC4BEA1D6CDD0A00D77ECB /* SettingsTableViewController.swift */; };
+		27CC4BED1D6CDD0A00D77ECB /* jsq_messages_sample.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 27CC4BEB1D6CDD0A00D77ECB /* jsq_messages_sample.m4a */; };
 		27D2BA1C1D3E239B00706600 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D2BA1B1D3E239A00706600 /* AlertController.swift */; };
 		27D2BA1E1D3E3C3600706600 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D2BA1D1D3E3C3600706600 /* SignupViewController.swift */; };
 		27D2BA201D3E3C4500706600 /* VerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D2BA1F1D3E3C4500706600 /* VerificationViewController.swift */; };
@@ -74,6 +82,14 @@
 		277E709A1D23B491002BD576 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = "Pods/../build/Debug-iphoneos/Parse/Parse.framework"; sourceTree = "<group>"; };
 		277E709B1D23B491002BD576 /* PubNub.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PubNub.framework; path = "Pods/../build/Debug-iphoneos/PubNub/PubNub.framework"; sourceTree = "<group>"; };
 		27A2A7651D4410BD009E33DD /* ProfileImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		27CC4BBC1D6CCAAC00D77ECB /* NSUserData + Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUserData + Settings.swift"; sourceTree = "<group>"; };
+		27CC4BBE1D6CCFC300D77ECB /* DemoModelData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoModelData.swift; sourceTree = "<group>"; };
+		27CC4BD51D6CDB2300D77ECB /* DemoConversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoConversation.swift; sourceTree = "<group>"; };
+		27CC4BD61D6CDB2300D77ECB /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		27CC4BD71D6CDB2300D77ECB /* Conversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
+		27CC4BD81D6CDB2300D77ECB /* InitalTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitalTableViewController.swift; sourceTree = "<group>"; };
+		27CC4BEA1D6CDD0A00D77ECB /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		27CC4BEB1D6CDD0A00D77ECB /* jsq_messages_sample.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = jsq_messages_sample.m4a; sourceTree = "<group>"; };
 		27D2BA1B1D3E239A00706600 /* AlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		27D2BA1D1D3E3C3600706600 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		27D2BA1F1D3E3C4500706600 /* VerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationViewController.swift; sourceTree = "<group>"; };
@@ -141,7 +157,15 @@
 		276511491D3FC73E00A2C4F2 /* ChatsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				27CC4BD51D6CDB2300D77ECB /* DemoConversation.swift */,
+				27CC4BD61D6CDB2300D77ECB /* ChatViewController.swift */,
+				27CC4BEA1D6CDD0A00D77ECB /* SettingsTableViewController.swift */,
+				27CC4BEB1D6CDD0A00D77ECB /* jsq_messages_sample.m4a */,
+				27CC4BD71D6CDB2300D77ECB /* Conversation.swift */,
+				27CC4BD81D6CDB2300D77ECB /* InitalTableViewController.swift */,
 				27002CFA1D421CB10097A54A /* ChatsViewController.swift */,
+				27CC4BBC1D6CCAAC00D77ECB /* NSUserData + Settings.swift */,
+				27CC4BBE1D6CCFC300D77ECB /* DemoModelData.swift */,
 			);
 			name = ChatsViewController;
 			sourceTree = "<group>";
@@ -422,6 +446,7 @@
 				27012F291D265CCE00D21507 /* fontawesome-webfont.ttf in Resources */,
 				27E3D4F01D22A19500D2C5E2 /* Assets.xcassets in Resources */,
 				27E3D4EE1D22A19500D2C5E2 /* Main.storyboard in Resources */,
+				27CC4BED1D6CDD0A00D77ECB /* jsq_messages_sample.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,17 +520,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				2765114D1D3FD5EB00A2C4F2 /* FriendsCollectionViewController.swift in Sources */,
+				27CC4BBF1D6CCFC300D77ECB /* DemoModelData.swift in Sources */,
 				27002D091D425D0B0097A54A /* SearchIDViewController.swift in Sources */,
+				27CC4BD91D6CDB2300D77ECB /* DemoConversation.swift in Sources */,
 				27D2BA1E1D3E3C3600706600 /* SignupViewController.swift in Sources */,
 				27D4E8201D40D7880017A881 /* FriendsCollectionViewCell.swift in Sources */,
+				27CC4BDC1D6CDB2300D77ECB /* InitalTableViewController.swift in Sources */,
 				277E70951D23A631002BD576 /* LoginViewController.swift in Sources */,
 				27002CFB1D421CB10097A54A /* ChatsViewController.swift in Sources */,
+				27CC4BDB1D6CDB2300D77ECB /* Conversation.swift in Sources */,
 				2749D36B1D40DB410072BCEC /* CellInterface.swift in Sources */,
 				27D2BA201D3E3C4500706600 /* VerificationViewController.swift in Sources */,
 				276511511D3FEBFF00A2C4F2 /* NavigationController.swift in Sources */,
+				27CC4BDA1D6CDB2300D77ECB /* ChatViewController.swift in Sources */,
+				27CC4BEC1D6CDD0A00D77ECB /* SettingsTableViewController.swift in Sources */,
 				2720E4B61D2A513900956E54 /* KeyboardController.swift in Sources */,
 				2749D3691D40DB2F0072BCEC /* User.swift in Sources */,
 				27E3D4E91D22A19500D2C5E2 /* AppDelegate.swift in Sources */,
+				27CC4BBD1D6CCAAC00D77ECB /* NSUserData + Settings.swift in Sources */,
 				27A2A7661D4410BD009E33DD /* ProfileImageCollectionViewCell.swift in Sources */,
 				27D2BA1C1D3E239B00706600 /* AlertController.swift in Sources */,
 				2765114F1D3FEAF300A2C4F2 /* DetailViewController.swift in Sources */,
@@ -651,9 +683,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = "$(inherited)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Itchy/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Weng.MarsTalk;
 				PRODUCT_NAME = MarsTalk;
@@ -669,9 +702,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = "$(inherited)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Itchy/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Weng.MarsTalk;
 				PRODUCT_NAME = MarsTalk;

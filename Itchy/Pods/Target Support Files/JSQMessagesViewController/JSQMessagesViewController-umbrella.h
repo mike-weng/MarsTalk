@@ -1,13 +1,10 @@
 #import <UIKit/UIKit.h>
 
-#import "JSQSystemSoundPlayer+JSQMessages.h"
 #import "NSBundle+JSQMessages.h"
 #import "NSString+JSQMessages.h"
 #import "UIColor+JSQMessages.h"
-#import "UIDevice+JSQMessages.h"
 #import "UIImage+JSQMessages.h"
 #import "UIView+JSQMessages.h"
-#import "JSQMessagesKeyboardController.h"
 #import "JSQMessagesViewController.h"
 #import "JSQMessagesAvatarImageFactory.h"
 #import "JSQMessagesBubbleImageFactory.h"
@@ -33,6 +30,7 @@
 #import "JSQMessagesBubbleImage.h"
 #import "JSQMessagesCollectionViewDataSource.h"
 #import "JSQMessagesCollectionViewDelegateFlowLayout.h"
+#import "JSQMessagesViewAccessoryButtonDelegate.h"
 #import "JSQPhotoMediaItem.h"
 #import "JSQVideoMediaItem.h"
 #import "JSQMessagesCellTextView.h"
@@ -47,6 +45,7 @@
 #import "JSQMessagesMediaPlaceholderView.h"
 #import "JSQMessagesToolbarContentView.h"
 #import "JSQMessagesTypingIndicatorFooterView.h"
+#import "JSQMessagesTypingView.h"
 
 FOUNDATION_EXPORT double JSQMessagesViewControllerVersionNumber;
 FOUNDATION_EXPORT const unsigned char JSQMessagesViewControllerVersionString[];

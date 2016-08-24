@@ -19,7 +19,7 @@ PODS:
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.14.0):
     - FBSDKCoreKit
-  - FoldingTabBar (1.0.4)
+  - FoldingTabBar (1.0.8)
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
@@ -34,7 +34,7 @@ PODS:
     - FBSDKLoginKit (~> 4.10)
     - FBSDKTVOSKit (~> 4.10)
     - Parse (~> 1.12)
-  - Presentr (0.1.6)
+  - Presentr (0.1.8)
   - PubNub (4.4.1):
     - CocoaLumberjack (= 2.3.0)
     - PubNub/Core (= 4.4.1)
@@ -42,7 +42,7 @@ PODS:
     - CocoaLumberjack (= 2.3.0)
   - RAMAnimatedTabBarController (1.5.3)
   - RMPZoomTransitionAnimator (1.0.2)
-  - SCLAlertView (0.5.9)
+  - SCLAlertView (0.6.0)
   - SkyFloatingLabelTextField (1.2.1)
   - SSBouncyButton (1.0.7):
     - BRYSerialAnimationQueue (~> 1.0)
@@ -77,7 +77,7 @@ SPEC CHECKSUMS:
   DisplaySwitcher: c23a4f751a7994de130612e9c669f8684a2cc540
   FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
   FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
-  FoldingTabBar: 0b099ae881bb5e009eb5f893aba2d6d8d8a066a2
+  FoldingTabBar: ff8d5dbb955b9b0d8280966e2a11dd71f854e155
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   KYAnimatedPageControl: 4b6360b6ed2cad47b757aa11e8903827d2cd2385
@@ -85,11 +85,11 @@ SPEC CHECKSUMS:
   MaterialKit: 2e5267bcf410b82793f2b92d2111f8ae4ed2c3f2
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
-  Presentr: d911d4de4a79041454ef8b7e9415dddb024f84fc
+  Presentr: 0e65151d93a0c432f6884b66075b15b25a2870ef
   PubNub: 7c59158178877fed5004df938cd31d030856f54e
   RAMAnimatedTabBarController: 04b624cf8958a0032bf7fa9c0f2c515f59d30b9c
   RMPZoomTransitionAnimator: fa1a0726e8e227069d9d63d30ef403aa12323960
-  SCLAlertView: d7c6a48c7d340e60206d4ed0e8ebcbff3b9d2a44
+  SCLAlertView: 0f6b3c23a48b4993564ff1dd3c065782e4b2b687
   SkyFloatingLabelTextField: 3f6610aded18e778df5cfab3b9e12a11b3e014e9
   SSBouncyButton: 90f6da63da6c6d32f9dab4928b80632b427d871a
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4

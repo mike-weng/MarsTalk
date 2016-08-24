@@ -125,11 +125,11 @@ class DetailViewController: UIViewController, RMPZoomTransitionAnimating, RMPZoo
     
     // MARK:-- UIScrollViewDelegate
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        // Indicator动画
+        
         if (scrollView != self.scrollView) {
             self.pageControl.indicator.animateIndicatorWithScrollView(scrollView, andIndicator: self.pageControl)
             if scrollView.dragging || scrollView.decelerating || scrollView.tracking {
-                //背景线条动画
+                
                 self.pageControl.pageControlLine.animateSelectedLineWithScrollView(scrollView)
             }
         }
