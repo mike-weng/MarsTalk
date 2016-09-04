@@ -27,18 +27,6 @@ public class User {
         self.lastName = user["lastName"] as! String
         self.profileImage = UIImage(named: "AvatarPlaceholder")!
         self.userID = user["userID"] as! String
-        setProfileImage(user["profileImage"])
-    }
-    
-    func setProfileImage(imageFile: AnyObject!) {
-        if let profileImage = imageFile {
-            let imageFile = profileImage
-            imageFile.getDataInBackgroundWithBlock { (result, error) -> Void in
-                if let imageData = result {
-                    self.profileImage = UIImage(data: imageData)!
-                }
-            }
-        }
     }
 
     

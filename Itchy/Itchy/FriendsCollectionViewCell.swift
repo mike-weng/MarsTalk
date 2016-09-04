@@ -36,16 +36,6 @@ class FriendsCollectionViewCell: UICollectionViewCell, CellInterface {
     private var avatarGridLayoutSize: CGFloat = 0.0
     private var initialLabelsLeadingConstraintValue: CGFloat = 0.0
     
-    func bind(user: User) {
-//        avatarImageView.image = user.avatar
-//        nameListLabel.text = user.name.localized + " " + user.surname.localized
-//        nameGridLabel.text = nameListLabel.text
-//        let userPostsString = (String(user.postsCount) + " posts • ").localized
-//        let userCommentsString = (String(user.commentsCount) + " comments • ").localized
-//        let userLikesString = (String(user.likesCount) + " likes").localized
-//        statisticLabel.text = userPostsString + userCommentsString + userLikesString
-    }
-    
     func setupGridLayoutConstraints(transitionProgress: CGFloat, cellWidth: CGFloat) {
         avatarImageViewHeightConstraint.constant = ceil((cellWidth - avatarListLayoutSize) * transitionProgress + avatarListLayoutSize)
         avatarImageViewWidthConstraint.constant = ceil(avatarImageViewHeightConstraint.constant)

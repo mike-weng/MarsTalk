@@ -129,6 +129,7 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
     }
     
     func tabBarDidSelectExtraRightItem(tabBar: YALFoldingTabBar!) {
+        
     }
     
 

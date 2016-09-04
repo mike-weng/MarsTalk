@@ -27,7 +27,6 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     private lazy var gridLayout = BaseLayout(staticCellHeight: gridLayoutStaticCellHeight, nextLayoutStaticCellHeight: listLayoutStaticCellHeight, layoutState: .GridLayoutState)
     private var layoutState: CollectionViewLayoutState = .ListLayoutState
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//    var friendList: [PFObject] = [PFObject]()
     
     var addFriendMenu: KYGooeyMenu!
     let presenter: Presentr = {
@@ -43,6 +42,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
         super.viewDidLoad()
         self.setupCollectionView()
         self.initializeAddFriendMenu()
+        self.collectionView.reloadData()
         self.loadFriendsList()
 
     }
@@ -51,13 +51,17 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
         super.viewWillAppear(animated)
         addFriendMenu.mainView.hidden = false
         addFriendMenu.showRightGooeyMenu()
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         addFriendMenu.hideRightGooeyMenu()
         addFriendMenu.mainView.hidden = true
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.collectionView.reloadData()
     }
     
     func transitionSourceImageView() -> UIImageView! {
@@ -214,6 +218,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
             print("nono")
         }
     }
+    
     func loadFriendsList() {
         AlertController.sharedInstance.startNormalActivityIndicator(self)
         let relation = PFUser.currentUser()!.relationForKey("friends")
@@ -222,18 +227,30 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
             if let result = result {
                 for user in result {
                     let user = user as! PFUser
-                    User.currentUser.friendList.append(User(user: user))
+                    let friend = User(user: user)
+                    User.currentUser.friendList.append(friend)
+                    
+                    // get image data
+                    if let profileImage = user["profileImage"] {
+                        let imageFile = profileImage as! PFFile
+                        imageFile.getDataInBackgroundWithBlock { (result, error) -> Void in
+                            if let imageData = result {
+                                friend.profileImage = UIImage(data: imageData)!
+                            }
+                            self.collectionView.reloadData()
+                            AlertController.sharedInstance.stopNormalActivityIndicator()
+                        }
+                    }
                 }
-                self.collectionView.reloadData()
             } else {
                 AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
             }
-            AlertController.sharedInstance.stopNormalActivityIndicator()
-            
         })
-        
-
-        self.collectionView.reloadData()
     }
+    
+    
+    
+    
+
 
 }

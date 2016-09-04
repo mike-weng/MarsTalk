@@ -51,9 +51,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func autoLogin() {
         if PFUser.currentUser()?.objectId != nil {
-            let currentUser = User(user: PFUser.currentUser()!)
+            let user = PFUser.currentUser()!
+            let currentUser = User(user: user)
             User.currentUser = currentUser
-            self.presentViewController(appDelegate.tabBarController, animated: true, completion: nil)
+            
+            // load user image
+            if let profileImage = user["profileImage"] {
+                profileImage.getDataInBackgroundWithBlock { (result, error) -> Void in
+                    if let imageData = result {
+                        currentUser.profileImage = UIImage(data: imageData)!
+                    }
+                }
+            }
+            
+            self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
         }
     }
     
@@ -73,18 +84,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 let currentUser = User(user: user)
                 User.currentUser = currentUser
                 
+                // load user image
+                if let profileImage = user["profileImage"] {
+                    profileImage.getDataInBackgroundWithBlock { (result, error) -> Void in
+                        if let imageData = result {
+                            currentUser.profileImage = UIImage(data: imageData)!
+                        }
+                    }
+                }
+                
                 // bind push installation to user
                 let currentInstallation = PFInstallation.currentInstallation()!
                 currentInstallation["user"] = user
                 currentInstallation.saveInBackground()
                 print("binded")
                 
-                self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
             } else {
                 let errorMsg = error!.userInfo["error"] as? String
                 AlertController.sharedInstance.showOneActionAlert("Login Failed", body: errorMsg!, actionTitle: "Retry", viewController: self)
             }
             AlertController.sharedInstance.stopNormalActivityIndicator()
+            self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
         })
         
     }
@@ -102,18 +122,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 let currentUser = User(user: user)
                 User.currentUser = currentUser
                 
+                // load user image
+                if let profileImage = user["profileImage"] {
+                    profileImage.getDataInBackgroundWithBlock { (result, error) -> Void in
+                        if let imageData = result {
+                            currentUser.profileImage = UIImage(data: imageData)!
+                        }
+                    }
+                }
+                
+                
                 // bind push installation to user
                 let currentInstallation = PFInstallation.currentInstallation()!
                 currentInstallation["user"] = user
                 currentInstallation.saveInBackground()
                 print("binded")
-                
-                self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
             } else {
                 let errorMsg = error!.userInfo["error"] as? String
                 AlertController.sharedInstance.showOneActionAlert("Login Failed", body: errorMsg!, actionTitle: "Ok", viewController: self)
             }
             AlertController.sharedInstance.stopNormalActivityIndicator()
+            self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
         }
     }
     
@@ -151,6 +180,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+        
     @IBAction func registerTouchUp(sender: AnyObject) {
         let signupViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SignupViewController") as! SignupViewController
         self.presentViewController(signupViewController, animated: true, completion: nil)

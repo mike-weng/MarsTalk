@@ -140,12 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				2765114C1D3FD5EB00A2C4F2 /* FriendsCollectionViewController.swift */,
-				27D4E81F1D40D7880017A881 /* FriendsCollectionViewCell.swift */,
 				2765114E1D3FEAF300A2C4F2 /* DetailViewController.swift */,
-				27A2A7651D4410BD009E33DD /* ProfileImageCollectionViewCell.swift */,
 				27002D081D425D0B0097A54A /* SearchIDViewController.swift */,
-				2749D36A1D40DB410072BCEC /* CellInterface.swift */,
-				2749D3661D40DA480072BCEC /* FriendsCollectionViewCell.xib */,
 			);
 			name = FriendsViewController;
 			sourceTree = "<group>";
@@ -156,10 +152,7 @@
 				27CC4BD81D6CDB2300D77ECB /* ChatsTableViewController.swift */,
 				27CC4BD61D6CDB2300D77ECB /* ChatRoomViewController.swift */,
 				2769CAF61D7C653D003000FC /* SelectChatFriendsViewController.swift */,
-				27CC4BD51D6CDB2300D77ECB /* DemoConversation.swift */,
 				27CC4BEA1D6CDD0A00D77ECB /* SettingsTableViewController.swift */,
-				27CC4BEB1D6CDD0A00D77ECB /* jsq_messages_sample.m4a */,
-				27CC4BD71D6CDB2300D77ECB /* Conversation.swift */,
 			);
 			name = ChatsViewController;
 			sourceTree = "<group>";
@@ -182,6 +175,13 @@
 			isa = PBXGroup;
 			children = (
 				2749D3681D40DB2F0072BCEC /* User.swift */,
+				27CC4BD71D6CDB2300D77ECB /* Conversation.swift */,
+				27CC4BD51D6CDB2300D77ECB /* DemoConversation.swift */,
+				27D4E81F1D40D7880017A881 /* FriendsCollectionViewCell.swift */,
+				2749D3661D40DA480072BCEC /* FriendsCollectionViewCell.xib */,
+				27A2A7651D4410BD009E33DD /* ProfileImageCollectionViewCell.swift */,
+				2749D36A1D40DB410072BCEC /* CellInterface.swift */,
+				27CC4BEB1D6CDD0A00D77ECB /* jsq_messages_sample.m4a */,
 			);
 			name = Models;
 			sourceTree = "<group>";
