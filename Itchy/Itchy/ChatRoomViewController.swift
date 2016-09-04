@@ -9,7 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 
-class ChatViewController: JSQMessagesViewController {
+class ChatRoomViewController: JSQMessagesViewController {
     var messages = [JSQMessage]()
     let defaults = NSUserDefaults.standardUserDefaults()
     var conversation: Conversation?
@@ -20,6 +20,8 @@ class ChatViewController: JSQMessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "ChatRoom"
+        self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         // Setup navigation
         setupBackButton()
         

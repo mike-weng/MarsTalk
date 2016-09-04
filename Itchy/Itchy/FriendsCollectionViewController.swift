@@ -27,9 +27,9 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     private lazy var gridLayout = BaseLayout(staticCellHeight: gridLayoutStaticCellHeight, nextLayoutStaticCellHeight: listLayoutStaticCellHeight, layoutState: .GridLayoutState)
     private var layoutState: CollectionViewLayoutState = .ListLayoutState
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    var friendList: [PFObject] = [PFObject]()
+//    var friendList: [PFObject] = [PFObject]()
     
-    var gooeyMenu: KYGooeyMenu!
+    var addFriendMenu: KYGooeyMenu!
     let presenter: Presentr = {
         let customType = PresentationType.Custom(width: .Custom(size: 350), height: .Custom(size: 500), center: .Center)
         let presenter = Presentr(presentationType: customType)
@@ -42,57 +42,23 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
-        self.initializeAddFriendGooeyMenu()
+        self.initializeAddFriendMenu()
+        self.loadFriendsList()
 
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        gooeyMenu.mainView.hidden = false
-        gooeyMenu.showRightGooeyMenu()
-        self.loadFriendsList()
+        addFriendMenu.mainView.hidden = false
+        addFriendMenu.showRightGooeyMenu()
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        gooeyMenu.hideRightGooeyMenu()
-        gooeyMenu.mainView.hidden = true
+        addFriendMenu.hideRightGooeyMenu()
+        addFriendMenu.mainView.hidden = true
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 1
-//    }
-//    
-//    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return 4
-//    }
-//    
-//    
-//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCellWithIdentifier("FriendsCell", forIndexPath: indexPath) as! FriendsTableViewCell
-//        cell.nameLabel.text = "Mike"
-////        let friend = friendList[indexPath.row] as! PFUser
-////        cell.nameLabel.text = friend["username"] as? String
-////        cell.userImageView!.image = UIImage(named: "placeHolder")
-//        
-//        return cell
-//    }
-//    
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        selectedIndexPath = indexPath
-//        let detailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
-//        self.navigationController?.pushViewController(detailViewController, animated: true)
-////        self.customPresentViewController(presenter, viewController: detailViewController, animated: true, completion: nil)
-//        self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
-//    }
-    
     
     func transitionSourceImageView() -> UIImageView! {
         let cell: FriendsCollectionViewCell = self.collectionView.cellForItemAtIndexPath(selectedIndexPath) as! FriendsCollectionViewCell
@@ -121,7 +87,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     }
     
     @IBAction func transformButtonTouchUp(sender: AnyObject) {
-        if self.friendList.isEmpty {
+        if User.currentUser.friendList.isEmpty {
             return
         }
         if !isTransitionAvailable {
@@ -143,7 +109,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.friendList.count
+        return User.currentUser.friendList.count
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -155,30 +121,19 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("FriendsCollectionViewCell", forIndexPath: indexPath) as! FriendsCollectionViewCell
-        let friend = friendList[indexPath.item] as! PFUser
-        let firstName = friend["firstName"] as! String
-        let lastName = friend["lastName"] as! String
+        let friend = User.currentUser.friendList[indexPath.item]
+        let firstName = friend.firstName
+        let lastName = friend.lastName
         cell.nameListLabel.text = firstName + " " + lastName
         cell.nameGridLabel.text = firstName + " " + lastName
-        cell.statisticLabel.text = friend["userID"] as? String
-        
-        if let profileImage = friend["profileImage"] {
-            let imageFile = profileImage as! PFFile
-            imageFile.getDataInBackgroundWithBlock { (result, error) -> Void in
-                if let imageData = result {
-                    cell.avatarImageView!.image = UIImage(data: imageData)
-                } else {
-                    AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Ok", viewController: self)
-                }
-            }
-        }
+        cell.statisticLabel.text = friend.userID
+        cell.avatarImageView.image = friend.profileImage
         
         if layoutState == .GridLayoutState {
             cell.setupGridLayoutConstraints(1, cellWidth: cell.frame.width)
         } else {
             cell.setupListLayoutConstraints(1, cellWidth: cell.frame.width)
         }
-//        cell.bind(searchUsers[indexPath.row])
         
         return cell
     }
@@ -202,7 +157,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     }
     
     func tabBarDidSelectExtraLeftItem(tabBar: YALFoldingTabBar!) {
-        if friendList.isEmpty {
+        if User.currentUser.friendList.isEmpty {
             return
         }
         //Rotate
@@ -224,23 +179,23 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     
     func tabBarWillExpand(tabBar: YALFoldingTabBar!) {
         print("will expand")
-        gooeyMenu.hideRightGooeyMenu()
+        addFriendMenu.hideRightGooeyMenu()
     }
     
     func tabBarWillCollapse(tabBar: YALFoldingTabBar!) {
         print("will collapse")
-        gooeyMenu.showRightGooeyMenu()
+        addFriendMenu.showRightGooeyMenu()
     }
 
-    func initializeAddFriendGooeyMenu() {
+    func initializeAddFriendMenu() {
         let tabBarController: YALFoldingTabBarController = appDelegate.tabBarController as YALFoldingTabBarController
-        gooeyMenu = KYGooeyMenu(origin: CGPointMake(CGRectGetMaxX(self.view.frame) - 72, CGRectGetMaxY(self.view.frame) - 63.5), andDiameter: 48.0, andDelegate: tabBarController, themeColor: UIColor.blackColor(), mainMenuImage: UIImage(named: "AddFriendIcon"))
-        gooeyMenu.offsetForGooeyMenu = 24
-        gooeyMenu.menuDelegate = self
-        gooeyMenu.radius = 20
-        gooeyMenu.extraDistance = 5
-        gooeyMenu.MenuCount = 3
-        gooeyMenu.menuImagesArray = [UIImage(named: "ShakeIcon")!, UIImage(named: "QRCodeIcon")!, UIImage(named: "SearchIcon")!]
+        addFriendMenu = KYGooeyMenu(origin: CGPointMake(CGRectGetMaxX(self.view.frame) - 72, CGRectGetMaxY(self.view.frame) - 63.5), andDiameter: 48.0, andDelegate: tabBarController, themeColor: UIColor.blackColor(), mainMenuImage: UIImage(named: "AddFriendIcon"))
+        addFriendMenu.offsetForGooeyMenu = 24
+        addFriendMenu.menuDelegate = self
+        addFriendMenu.radius = 20
+        addFriendMenu.extraDistance = 5
+        addFriendMenu.MenuCount = 3
+        addFriendMenu.menuImagesArray = [UIImage(named: "ShakeIcon")!, UIImage(named: "QRCodeIcon")!, UIImage(named: "SearchIcon")!]
     }
     
     func menuDidSelected(index: Int32) {
@@ -255,26 +210,30 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
             //Search
             let searchIDViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SearchIDViewController") as! SearchIDViewController
             self.navigationController?.pushViewController(searchIDViewController, animated: true)
-//            self.presentViewController(searchIDViewController, animated: true, completion: nil)
-//            self.customPresentViewController(presenter, viewController: searchIDViewController, animated: true, completion: nil)
         default:
             print("nono")
         }
     }
     func loadFriendsList() {
-//        AlertController.sharedInstance.startNormalActivityIndicator(self)
+        AlertController.sharedInstance.startNormalActivityIndicator(self)
         let relation = PFUser.currentUser()!.relationForKey("friends")
         let query = relation.query()
         query.findObjectsInBackgroundWithBlock({ (result, error) -> Void in
             if let result = result {
-                self.friendList = result
+                for user in result {
+                    let user = user as! PFUser
+                    User.currentUser.friendList.append(User(user: user))
+                }
                 self.collectionView.reloadData()
             } else {
                 AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
             }
-//            AlertController.sharedInstance.stopNormalActivityIndicator()
+            AlertController.sharedInstance.stopNormalActivityIndicator()
+            
         })
+        
 
+        self.collectionView.reloadData()
     }
 
 }

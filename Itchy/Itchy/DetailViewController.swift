@@ -33,7 +33,7 @@ class DetailViewController: UIViewController, RMPZoomTransitionAnimating, RMPZoo
         flow.minimumInteritemSpacing = 0
         flow.minimumLineSpacing = 0
         
-        self.pageControl = KYAnimatedPageControl(frame: CGRectMake(self.collectionView.frame.maxX/4.0, self.collectionView.frame.maxY-20, self.view.frame.width-4*self.collectionView.frame.maxX/8.0, 20))
+        self.pageControl = KYAnimatedPageControl(frame: CGRectMake(self.collectionView.frame.maxX/2.0 - (4 * 25.0 / 2), self.collectionView.frame.maxY-20, 4 * 25, 20))
         
         self.pageControl.pageCount = 4
         self.pageControl.unSelectedColor = UIColor(white: 0.9, alpha: 0.6)

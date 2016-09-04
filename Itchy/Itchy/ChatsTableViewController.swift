@@ -7,17 +7,19 @@
 //
 
 import UIKit
+import FoldingTabBar
 
 let cellIdentifier = "cellIdentifier"
 
-class InitalTableViewController: UITableViewController {
+class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
     
     //MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Chats"
-        self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
+        self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
     }
     
@@ -102,12 +104,12 @@ class InitalTableViewController: UITableViewController {
         case 0:
             switch indexPath.row {
             case 0:
-                let chatView = ChatViewController()
+                let chatView = ChatRoomViewController()
                 chatView.messages = makeNormalConversation()
                 let chatNavigationController = UINavigationController(rootViewController: chatView)
                 presentViewController(chatNavigationController, animated: true, completion: nil)
             case 1:
-                let chatView = ChatViewController()
+                let chatView = ChatRoomViewController()
                 chatView.messages = makeGroupConversation()
                 let chatNavigationController = UINavigationController(rootViewController: chatView)
                 presentViewController(chatNavigationController, animated: true, completion: nil)
@@ -124,6 +126,9 @@ class InitalTableViewController: UITableViewController {
         default:
             return
         }
+    }
+    
+    func tabBarDidSelectExtraRightItem(tabBar: YALFoldingTabBar!) {
     }
     
 

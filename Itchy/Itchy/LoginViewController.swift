@@ -38,48 +38,58 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         keyboardController.registerTapToHideKeyboard()
-
     }
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-//        if PFUser.currentUser()?.objectId != nil {
-//            //            Convenience.currentUser = PFUser.currentUser()
-//            self.presentViewController(appDelegate.tabBarController, animated: true, completion: nil)
-//        }
-        
-    }
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         keyboardController.unregisterTapToHideKeyboard()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        autoLogin()
+    }
+    
+    func autoLogin() {
+        if PFUser.currentUser()?.objectId != nil {
+            let currentUser = User(user: PFUser.currentUser()!)
+            User.currentUser = currentUser
+            self.presentViewController(appDelegate.tabBarController, animated: true, completion: nil)
+        }
+    }
+    
+    
     @IBAction func loginButtonTouchUp(sender: AnyObject) {
         if (emailTextfield.text == "" || passwordTextfield.text == "") {
             AlertController.sharedInstance.showOneActionAlert("Empty username/passwords", body: "Please enter username and passwords", actionTitle: "Retry", viewController: self)
         } else {
-            AlertController.sharedInstance.startActivityIndicator(self)
-            PFUser.logInWithUsernameInBackground(emailTextfield.text!, password: passwordTextfield.text!, block: { (user: PFUser?, error: NSError?) in
-                if user != nil {
-//                    Convenience.currentUser = user
-//                    self.appDelegate.configuration?.uuid = Convenience.currentUser.objectId!
-//                    let tabBarController = self.initializeFoldingTabBarController()
-                    
-                    // bind push installation to user
-                    let currentInstallation = PFInstallation.currentInstallation()!
-                    currentInstallation["user"] = user
-                    currentInstallation.saveInBackground()
-                    print("binded")
-                    
-                    self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
-                } else {
-                    let errorMsg = error!.userInfo["error"] as? String
-                    AlertController.sharedInstance.showOneActionAlert("Login Failed", body: errorMsg!, actionTitle: "Retry", viewController: self)
-                }
-                AlertController.sharedInstance.stopActivityIndicator()
-            })
+            AlertController.sharedInstance.startNormalActivityIndicator(self)
+            loginWithEmail(emailTextfield.text!, password: passwordTextfield.text!)
         }
     }
+    
+    func loginWithEmail(email: String, password: String) {
+        PFUser.logInWithUsernameInBackground(email, password: password, block: { (user: PFUser?, error: NSError?) in
+            if let user = user {
+                let currentUser = User(user: user)
+                User.currentUser = currentUser
+                
+                // bind push installation to user
+                let currentInstallation = PFInstallation.currentInstallation()!
+                currentInstallation["user"] = user
+                currentInstallation.saveInBackground()
+                print("binded")
+                
+                self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
+            } else {
+                let errorMsg = error!.userInfo["error"] as? String
+                AlertController.sharedInstance.showOneActionAlert("Login Failed", body: errorMsg!, actionTitle: "Retry", viewController: self)
+            }
+            AlertController.sharedInstance.stopNormalActivityIndicator()
+        })
+        
+    }
+
+    
     @IBAction func facebookLoginTouchUp(sender: AnyObject) {
         AlertController.sharedInstance.startNormalActivityIndicator(self)
         let permission = ["public_profile", "user_friends", "email"]
@@ -88,7 +98,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 if user.isNew {
                     self.getFBUserInfo()
                 }
-                //                Convenience.currentUser = user
+                
+                let currentUser = User(user: user)
+                User.currentUser = currentUser
                 
                 // bind push installation to user
                 let currentInstallation = PFInstallation.currentInstallation()!
@@ -115,12 +127,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 currentUser["email"] = result["email"]
                 let userID = result["id"]
                 self.getFBProfileImage(userID!)
-                print(currentUser["profileImage"])
                 
                 currentUser.saveInBackgroundWithBlock({ (success, error) -> Void in
-                    if success {
-                        print("success save")
-                    } else {
+                    if !success {
                         AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
                     }
                 })
@@ -149,7 +158,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func initializeFoldingTabBarController() {
         self.appDelegate.tabBarController = self.storyboard?.instantiateViewControllerWithIdentifier("TabBarController") as! YALFoldingTabBarController
-//        self.appDelegate.tabBarController.tabBarView.gooeyLeft = true
         let item1: YALTabBarItem = YALTabBarItem(itemImage: UIImage(named: "ProfileIcon")!, leftItemImage: UIImage(named: "RotateIcon")!, rightItemImage: nil)
         let item2: YALTabBarItem = YALTabBarItem(itemImage: UIImage(named: "ChatIcon")!, leftItemImage: UIImage(named: "SearchIcon")!, rightItemImage: UIImage(named: "NewChatIcon")!)
         let item3: YALTabBarItem = YALTabBarItem(itemImage: UIImage(named: "GroupIcon")!, leftItemImage: UIImage(named: "SearchIcon")!, rightItemImage: UIImage(named: "NewChatIcon")!)

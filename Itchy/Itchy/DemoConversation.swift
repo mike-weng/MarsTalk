@@ -57,7 +57,7 @@ let AvatarLeonard = JSQMessagesAvatarImageFactory().avatarImageWithUserInitials(
 let AvatarCook = JSQMessagesAvatarImageFactory().avatarImageWithUserInitials("TC", backgroundColor: UIColor.grayColor(), textColor: UIColor.whiteColor(), font: UIFont.systemFontOfSize(12))
 
 // Create avatar with Placeholder Image
-let AvatarJobs = JSQMessagesAvatarImageFactory().avatarImageWithPlaceholder(UIImage(named:"demo_avatar_jobs")!)
+let AvatarJobs = JSQMessagesAvatarImageFactory().avatarImageWithPlaceholder(UIImage(named:"AvatarPlaceholder")!)
 
 let AvatarWaz = JSQMessagesAvatarImageFactory().avatarImageWithUserInitials("SW", backgroundColor: UIColor.jsq_messageBubbleGreenColor(), textColor: UIColor.whiteColor(), font: UIFont.systemFontOfSize(12))
 
@@ -103,7 +103,7 @@ let message8 = JSQMessage(senderId: AvatarIDLeonard, displayName: getName(JSQUse
 let message9 = JSQMessage(senderId: AvatarIdWoz, displayName: getName(JSQUser.Wazniak), text: "You guys need an award for this, I'll talk to my people at Apple. 💯 💯 💯")
 
 // photo message
-let photoItem = JSQPhotoMediaItem(image: UIImage(named: "goldengate"))
+let photoItem = JSQPhotoMediaItem(image: UIImage(named: "AvatarPlaceholder"))
 let photoMessage = JSQMessage(senderId: AvatarIdWoz, displayName: getName(JSQUser.Wazniak), media: photoItem)
 
 // audio mesage

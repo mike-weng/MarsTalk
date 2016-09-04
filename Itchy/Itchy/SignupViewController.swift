@@ -17,8 +17,8 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
 
 
     @IBOutlet weak var nextButton: SSBouncyButton!
-    @IBOutlet weak var emailTextfield: SkyFloatingLabelTextFieldWithIcon!
     @IBOutlet weak var backgroundImageView: UIImageView!
+    @IBOutlet weak var emailTextfield: SkyFloatingLabelTextFieldWithIcon!
     @IBOutlet weak var passwordTextfield: SkyFloatingLabelTextFieldWithIcon!
     @IBOutlet weak var confirmPasswordTextfield: SkyFloatingLabelTextFieldWithIcon!
     var keyboardController: KeyboardController!
@@ -41,19 +41,13 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         keyboardController.registerTapToHideKeyboard()
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         keyboardController.unregisterTapToHideKeyboard()
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+
     @IBAction func nextButtonTouchUp(sender: AnyObject) {
         AlertController.sharedInstance.startActivityIndicator(self)
         let user = PFUser()

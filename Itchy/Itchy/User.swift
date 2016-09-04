@@ -1,29 +1,45 @@
 //
 //  User.swift
-//  YALLayoutTransitioning
-//
-//  Created by Roman on 23.02.16.
-//  Copyright © 2016 Yalantis. All rights reserved.
 //
 
 import UIKit
+import Parse
 
-class User {
+
+public class User {
     
-    var name: String
-    var surname: String
-    var avatar: UIImage
-    var postsCount: Int
-    var commentsCount: Int
-    var likesCount: Int
-
-    init(name: String, surname: String, avatar: UIImage, postsCount: Int, commentsCount: Int, likesCount: Int) {
-        self.name = name
-        self.surname = surname
-        self.avatar = avatar
-        self.postsCount = postsCount
-        self.commentsCount = commentsCount
-        self.likesCount = likesCount
+    var firstName: String
+    var lastName: String
+    var profileImage: UIImage
+    var userID: String
+    var friendList: [User] = []
+    static var currentUser: User!
+    
+    init(firstName: String, lastName: String, profileImage: UIImage, userID: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.userID = userID
+        self.profileImage = profileImage
     }
+    
+    init(user: PFUser) {
+        self.firstName = user["firstName"] as! String
+        self.lastName = user["lastName"] as! String
+        self.profileImage = UIImage(named: "AvatarPlaceholder")!
+        self.userID = user["userID"] as! String
+        setProfileImage(user["profileImage"])
+    }
+    
+    func setProfileImage(imageFile: AnyObject!) {
+        if let profileImage = imageFile {
+            let imageFile = profileImage
+            imageFile.getDataInBackgroundWithBlock { (result, error) -> Void in
+                if let imageData = result {
+                    self.profileImage = UIImage(data: imageData)!
+                }
+            }
+        }
+    }
+
     
 }
