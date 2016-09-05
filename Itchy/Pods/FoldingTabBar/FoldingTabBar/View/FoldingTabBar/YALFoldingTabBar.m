@@ -383,7 +383,6 @@ typedef NS_ENUM(NSUInteger, YALAnimatingState) {
   
         
         if (defaultSelectedTabBarItem.leftImage) {
-            printf("%f", self.offsetForExtraTabBarItems);
             self.extraLeftButton.center = CGPointMake(self.offsetForExtraTabBarItems + CGRectGetWidth(self.extraLeftButton.frame) / 2.f, self.extraLeftButton.center.y);
         }
         
@@ -394,7 +393,6 @@ typedef NS_ENUM(NSUInteger, YALAnimatingState) {
 }
 
 - (void)configureExtraTabBarItemWithModel:(YALTabBarItem *)item {
-    printf("set");
     if (item.leftImage) {
         self.extraLeftButton.hidden = NO;
         [self.extraLeftButton setImage:item.leftImage forState:UIControlStateNormal];
@@ -682,15 +680,36 @@ typedef NS_ENUM(NSUInteger, YALAnimatingState) {
 }
 
 - (void)setExtraLeftTabBarButtonImage: (UIImage *) image index:(int) index {
-    YALTabBarItem *item = [self.allBarItems objectAtIndex:0];
+    YALTabBarItem *item = [self.allBarItems objectAtIndex:index];
     item.leftImage = image;
     [self configureExtraTabBarItemWithModel:item];
 }
 - (void)setExtraRightTabBarButtonImage: (UIImage *) image index:(int) index {
-    YALTabBarItem *item = [self.allBarItems objectAtIndex:0];
-    item.leftImage = image;
+    YALTabBarItem *item = [self.allBarItems objectAtIndex:index];
+    item.rightImage = image;
     [self configureExtraTabBarItemWithModel:item];
 }
+
+- (void)swapExtraRightTabBarItem {
+    [UIView animateWithDuration:kYALHideExtraTabBarItemViewAnimationParameters.duration
+                     animations:^{
+                         self.extraRightButton.center = CGPointMake(self.extraRightButton.center.x + CGRectGetWidth(self.extraRightButton.frame) + self.offsetForExtraTabBarItems, self.extraRightButton.center.y);
+                     } completion:^(BOOL finished) {
+                         self.showExtraRightTabBarItem;
+                     }];
+}
+
+
+- (void)swapExtraLeftTabBarItem {
+    [UIView animateWithDuration:kYALHideExtraTabBarItemViewAnimationParameters.duration
+                     animations:^{
+                         self.extraLeftButton.center = CGPointMake( - CGRectGetWidth(self.extraLeftButton.frame) / 2.f, self.extraLeftButton.center.y);
+                     } completion:^(BOOL finished) {
+                         self.showExtraLeftTabBarItem;
+                     }];
+}
+
+
 - (void)setExtraRightTabBarButton: (UIView *) view {
     [self.extraLeftButton addSubview:view];
 }

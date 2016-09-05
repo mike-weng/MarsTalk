@@ -18,6 +18,7 @@ private let listLayoutStaticCellHeight: CGFloat = 80
 private let gridLayoutStaticCellHeight: CGFloat = 165
 
 class FriendsCollectionViewController: UIViewController, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate, RMPZoomTransitionAnimating, RMPZoomTransitionDelegate, YALTabBarDelegate, menuDidSelectedDelegate {
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
     var selectedIndexPath: NSIndexPath!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -26,8 +27,8 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     private lazy var listLayout = BaseLayout(staticCellHeight: listLayoutStaticCellHeight, nextLayoutStaticCellHeight: gridLayoutStaticCellHeight, layoutState: .ListLayoutState)
     private lazy var gridLayout = BaseLayout(staticCellHeight: gridLayoutStaticCellHeight, nextLayoutStaticCellHeight: listLayoutStaticCellHeight, layoutState: .GridLayoutState)
     private var layoutState: CollectionViewLayoutState = .ListLayoutState
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
+    var refreshControl: UIRefreshControl!
+
     var addFriendMenu: KYGooeyMenu!
     let presenter: Presentr = {
         let customType = PresentationType.Custom(width: .Custom(size: 350), height: .Custom(size: 500), center: .Center)
@@ -42,7 +43,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
         super.viewDidLoad()
         self.setupCollectionView()
         self.initializeAddFriendMenu()
-        self.collectionView.reloadData()
+        self.configureRefreshControl();
         self.loadFriendsList()
 
     }
@@ -51,6 +52,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
         super.viewWillAppear(animated)
         addFriendMenu.mainView.hidden = false
         addFriendMenu.showRightGooeyMenu()
+        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "RotateIcon"), index: 0)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -225,6 +227,10 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
         let query = relation.query()
         query.findObjectsInBackgroundWithBlock({ (result, error) -> Void in
             if let result = result {
+                if (result.isEmpty) {
+                    self.collectionView.reloadData()
+                    AlertController.sharedInstance.stopNormalActivityIndicator()
+                }
                 for user in result {
                     let user = user as! PFUser
                     let friend = User(user: user)
@@ -246,6 +252,18 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
                 AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
             }
         })
+    }
+    
+    func configureRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(FriendsCollectionViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
+        collectionView.addSubview(refreshControl)
+    }
+    
+    func refresh() {
+        loadFriendsList()
+        self.refreshControl?.endRefreshing()
     }
     
     

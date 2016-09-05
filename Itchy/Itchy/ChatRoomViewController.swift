@@ -10,6 +10,7 @@ import UIKit
 import JSQMessagesViewController
 
 class ChatRoomViewController: JSQMessagesViewController {
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var messages = [JSQMessage]()
     let defaults = NSUserDefaults.standardUserDefaults()
     var conversation: Conversation?
@@ -66,6 +67,12 @@ class ChatRoomViewController: JSQMessagesViewController {
 
         self.collectionView?.reloadData()
         self.collectionView?.layoutIfNeeded()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "BackIcon"), index: 1)
+
     }
     
     func setupBackButton() {

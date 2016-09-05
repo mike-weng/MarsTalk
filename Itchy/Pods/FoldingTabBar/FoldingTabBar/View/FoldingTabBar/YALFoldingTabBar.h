@@ -53,5 +53,11 @@ typedef NS_ENUM(NSUInteger, YALTabBarState) {
 
 - (void)setExtraLeftTabBarButtonImage:(UIImage *)image index:(int)index;
 - (void)setExtraRightTabBarButtonImage: (UIImage *)image index:(int) index;
+- (void)showExtraLeftTabBarItem;
+- (void)showExtraRightTabBarItem;
+- (void)hideExtraLeftTabBarItem;
+- (void)hideExtraRightTabBarItem;
+- (void)swapExtraRightTabBarItem;
+- (void)swapExtraLeftTabBarItem;
 
 @end

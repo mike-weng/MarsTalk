@@ -18,13 +18,11 @@ class DetailViewController: UIViewController, RMPZoomTransitionAnimating, RMPZoo
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
-    
     var pageControl: KYAnimatedPageControl!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.delegate = self
         self.navigationItem.hidesBackButton = true
-        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "BackIcon"), index: 1)
         self.navigationController?.navigationBarHidden = true
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
 
@@ -53,6 +51,11 @@ class DetailViewController: UIViewController, RMPZoomTransitionAnimating, RMPZoo
             self.view.frame.size.width,
             self.view.frame.size.height + 500
         )
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "BackIcon"), index: 0)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -92,7 +95,7 @@ class DetailViewController: UIViewController, RMPZoomTransitionAnimating, RMPZoo
     }
     func tabBarDidSelectExtraLeftItem(tabBar: YALFoldingTabBar!) {
         self.navigationController?.popViewControllerAnimated(true)
-        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "RotateIcon"), index: 1)
+        tabBar.setExtraLeftTabBarButtonImage(UIImage(named: "RotateIcon"), index: 1)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

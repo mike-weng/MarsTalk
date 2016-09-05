@@ -26,11 +26,11 @@ class SearchIDViewController: UIViewController, YALTabBarDelegate, UISearchBarDe
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
         keyboardController = KeyboardController(viewController: self)
-        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "BackIcon"), index: 1)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "BackIcon"), index: 0)
         keyboardController.registerTapToHideKeyboard()
         self.hideResult()
     }
@@ -81,7 +81,6 @@ class SearchIDViewController: UIViewController, YALTabBarDelegate, UISearchBarDe
     }
     func tabBarDidSelectExtraLeftItem(tabBar: YALFoldingTabBar!) {
         self.navigationController?.popViewControllerAnimated(true)
-        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "RotateIcon"), index: 1)
     }
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         self.view.endEditing(true)
@@ -111,6 +110,9 @@ class SearchIDViewController: UIViewController, YALTabBarDelegate, UISearchBarDe
         searchQuery?.findObjectsInBackgroundWithBlock({ (result, error) -> Void in
             self.searchQuery = nil
             if let result = result {
+                if (result.isEmpty) {
+                    return
+                }
                 self.searchResult = result
                 let user = self.searchResult[0] as! PFUser
                 let firstName = user["firstName"] as! String

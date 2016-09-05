@@ -112,54 +112,65 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func facebookLoginTouchUp(sender: AnyObject) {
         AlertController.sharedInstance.startNormalActivityIndicator(self)
+        FBSDKLoginManager().logOut()
         let permission = ["public_profile", "user_friends", "email"]
         PFFacebookUtils.logInInBackgroundWithReadPermissions(permission) { (user, error) -> Void in
             if let user = user {
-                if user.isNew {
-                    self.getFBUserInfo()
-                }
-                
-                let currentUser = User(user: user)
-                User.currentUser = currentUser
-                
-                // load user image
-                if let profileImage = user["profileImage"] {
-                    profileImage.getDataInBackgroundWithBlock { (result, error) -> Void in
-                        if let imageData = result {
-                            currentUser.profileImage = UIImage(data: imageData)!
+                self.getFBUserInfo({
+                    let currentUser = User(user: PFUser.currentUser()!)
+                    User.currentUser = currentUser
+                    // load user image
+                    if let profileImage = user["profileImage"] {
+                        profileImage.getDataInBackgroundWithBlock { (result, error) -> Void in
+                            if let imageData = result {
+                                currentUser.profileImage = UIImage(data: imageData)!
+                            }
                         }
                     }
-                }
-                
-                
-                // bind push installation to user
-                let currentInstallation = PFInstallation.currentInstallation()!
-                currentInstallation["user"] = user
-                currentInstallation.saveInBackground()
-                print("binded")
+                    
+                    // bind push installation to user
+                    let currentInstallation = PFInstallation.currentInstallation()!
+                    currentInstallation["user"] = user
+                    currentInstallation.saveInBackground()
+                    print("binded")
+                    AlertController.sharedInstance.stopNormalActivityIndicator()
+                    self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
+
+                })
+
             } else {
                 let errorMsg = error!.userInfo["error"] as? String
                 AlertController.sharedInstance.showOneActionAlert("Login Failed", body: errorMsg!, actionTitle: "Ok", viewController: self)
             }
-            AlertController.sharedInstance.stopNormalActivityIndicator()
-            self.presentViewController(self.appDelegate.tabBarController, animated: true, completion: nil)
+            
         }
     }
     
-    func getFBUserInfo() {
+    func getFBUserInfo(completionHandler: () -> Void) {
         let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields" : "first_name, last_name, email"])
         graphRequest.startWithCompletionHandler { (connection, result, error) in
             if let result = result as? [String:String] {
+                
                 let currentUser: PFUser = PFUser.currentUser()!
-                currentUser["firstName"] = result["first_name"]
-                currentUser["lastName"] = result["last_name"]
-                currentUser["email"] = result["email"]
+                if let firstName = result["first_name"] {
+                    currentUser["firstName"] = firstName
+                }
+                if let lastName = result["last_name"] {
+                    currentUser["lastName"] = lastName
+                }
+                if let email = result["email"] {
+                    currentUser["email"] = email
+                }
                 let userID = result["id"]
+                currentUser["userID"] = userID
                 self.getFBProfileImage(userID!)
+                
                 
                 currentUser.saveInBackgroundWithBlock({ (success, error) -> Void in
                     if !success {
                         AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
+                    } else {
+                        completionHandler()
                     }
                 })
             } else {

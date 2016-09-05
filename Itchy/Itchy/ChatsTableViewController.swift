@@ -14,13 +14,21 @@ let cellIdentifier = "cellIdentifier"
 class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
     
     //MARK: - View lifecycle
-    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Chats"
         self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.appDelegate.tabBarController.tabBarView.setExtraRightTabBarButtonImage(UIImage(named: "NewChatIcon"), index: 1)
+        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "SearchIcon"), index: 1)
+        
     }
     
     
@@ -129,7 +137,11 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
     }
     
     func tabBarDidSelectExtraRightItem(tabBar: YALFoldingTabBar!) {
-        
+        let selectChatFriendsViewController = self.storyboard?.instantiateViewControllerWithIdentifier("SelectChatFriendsViewController") as! SelectChatFriendsViewController
+        tabBar.swapExtraRightTabBarItem()
+        tabBar.swapExtraLeftTabBarItem()
+        self.navigationController?.pushViewController(selectChatFriendsViewController, animated: true)
+
     }
     
 
