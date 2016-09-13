@@ -11,9 +11,9 @@ import JSQMessagesViewController
 
 class ChatRoomViewController: JSQMessagesViewController {
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    var chatRoom: ChatRoom!
     var messages = [JSQMessage]()
     let defaults = NSUserDefaults.standardUserDefaults()
-    var conversation: Conversation?
     var incomingBubble: JSQMessagesBubbleImage!
     var outgoingBubble: JSQMessagesBubbleImage!
     private var displayName: String!
@@ -84,8 +84,10 @@ class ChatRoomViewController: JSQMessagesViewController {
          */
         var copyMessage = self.messages.last?.copy()
         
+        let user = chatRoom.users[0]
+        
         if (copyMessage == nil) {
-            copyMessage = JSQMessage(senderId: AvatarIdJobs, displayName: getName(JSQUser.Jobs), text: "First received!")
+            copyMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, text: "First received!")
         }
             
         var newMessage:JSQMessage!
@@ -149,15 +151,16 @@ class ChatRoomViewController: JSQMessagesViewController {
             default:
                 assertionFailure("Error: This Media type was not recognised")
             }
-            
-            newMessage = JSQMessage(senderId: AvatarIdJobs, displayName: getName(JSQUser.Jobs), media: newMediaData)
+           
+
+            newMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, media: newMediaData)
         }
         else {
             /**
              *  Last message was a text message
              */
             
-            newMessage = JSQMessage(senderId: AvatarIdJobs, displayName: getName(JSQUser.Jobs), text: copyMessage!.text)
+            newMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, text: copyMessage!.text)
         }
         
         /**
@@ -313,11 +316,11 @@ class ChatRoomViewController: JSQMessagesViewController {
     //MARK: JSQMessages CollectionView DataSource
     
     override func senderId() -> String {
-        return JSQUser.Wazniak.rawValue
+        return User.currentUser.userID
     }
     
     override func senderDisplayName() -> String {
-        return getName(JSQUser.Wazniak)
+        return User.currentUser.firstName
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -335,7 +338,7 @@ class ChatRoomViewController: JSQMessagesViewController {
     
     override func collectionView(collectionView: JSQMessagesCollectionView, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath) -> JSQMessageAvatarImageDataSource? {
         let message = messages[indexPath.item]
-        return getAvatar(message.senderId)
+        return self.getAvatarImage(message.senderId)
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath) -> NSAttributedString? {
@@ -421,4 +424,13 @@ class ChatRoomViewController: JSQMessagesViewController {
         return kJSQMessagesCollectionViewCellLabelHeightDefault;
     }
     
+    func getAvatarImage(id: String) -> JSQMessagesAvatarImage{
+        for user in chatRoom.users {
+            if (user.userID == id) {
+                let avatar = JSQMessagesAvatarImageFactory().avatarImageWithPlaceholder(user.profileImage)
+                return avatar
+            }
+        }
+        return JSQMessagesAvatarImageFactory().avatarImageWithPlaceholder(UIImage(named: "AvatarPlaceholder")!)
+    }
 }

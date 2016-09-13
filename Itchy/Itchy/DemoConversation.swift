@@ -64,22 +64,22 @@ let AvatarWaz = JSQMessagesAvatarImageFactory().avatarImageWithUserInitials("SW"
 let AvatarSquires = JSQMessagesAvatarImageFactory().avatarImageWithUserInitials("JSQ", backgroundColor: UIColor.grayColor(), textColor: UIColor.whiteColor(), font: UIFont.systemFontOfSize(12))
 
 // Helper Method for getting an avatar for a specific JSQUser.
-func getAvatar(id: String) -> JSQMessagesAvatarImage{
-    let user = JSQUser(rawValue: id)!
-    
-    switch user {
-    case .Leonard:
-        return AvatarLeonard
-    case .Squires:
-        return AvatarSquires
-    case .Cook:
-        return AvatarCook
-    case .Wazniak:
-        return AvatarWaz
-    case .Jobs:
-        return AvatarJobs
-    }
-}
+//func getAvatar(id: String) -> JSQMessagesAvatarImage{
+//    let user = JSQUser(rawValue: id)!
+//    
+//    switch user {
+//    case .Leonard:
+//        return AvatarLeonard
+//    case .Squires:
+//        return AvatarSquires
+//    case .Cook:
+//        return AvatarCook
+//    case .Wazniak:
+//        return AvatarWaz
+//    case .Jobs:
+//        return AvatarJobs
+//    }
+//}
 
 
 

@@ -27,6 +27,7 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.loadChatRooms()
         self.appDelegate.tabBarController.tabBarView.setExtraRightTabBarButtonImage(UIImage(named: "NewChatIcon"), index: 1)
         self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "SearchIcon"), index: 1)
         
@@ -117,7 +118,8 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
         switch indexPath.section {
         case 0:
             let chatRoomViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ChatRoomViewController") as! ChatRoomViewController
-            chatRoomViewController.messages = makeNormalConversation()
+//            chatRoomViewController.messages = makeNormalConversation()
+            chatRoomViewController.chatRoom = User.currentUser.chatRooms[indexPath.row]
             self.navigationController?.pushViewController(chatRoomViewController, animated: true)
         case 1:
             switch indexPath.row {
