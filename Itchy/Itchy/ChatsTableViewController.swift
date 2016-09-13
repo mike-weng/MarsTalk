@@ -22,6 +22,7 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
         self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        configureRefreshControl()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -35,15 +36,17 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch (section) {
         case 0:
-            return 2
+            return User.currentUser.chatRooms.count
         case 1:
+            return 2
+        case 2:
             return 1
         default:
             return 0
@@ -58,6 +61,18 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
         
         switch indexPath.section {
         case 0:
+            let chatRoom = User.currentUser.chatRooms[indexPath.row]
+            let users: [User] = chatRoom.users
+            if (users.count == 2) {
+                cell.textLabel?.text = users[0].firstName + " " + users[0].lastName
+            } else {
+                cell.textLabel?.text = chatRoom.chatRoomChannel
+            }
+            cell.imageView?.image = chatRoom.chatRoomImage
+            cell.imageView!.layer.cornerRadius = cell.imageView!.frame.size.width / 2
+            cell.imageView!.clipsToBounds = true
+            break
+        case 1:
             switch indexPath.row {
             case 0:
                 cell.textLabel?.text = "Conversation between two people"
@@ -68,7 +83,7 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
             default:
                 break
             }
-        case 1:
+        case 2:
             switch indexPath.row {
             case 0:
                 cell.textLabel?.text = "Settings"
@@ -86,20 +101,11 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
         
         switch section {
         case 0:
-            return "Examples"
+            return "Chat Rooms"
         case 1:
-            return "Options"
-        default:
-            return nil
-        }
-    }
-    
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
+            return "Examples"
         case 2:
-            return "Copyright © 2015\nJesse Squires\nMIT License"
-        case 3:
-            return "Thanks to all the contributers and MacMeDan for this swift example."
+            return "Options"
         default:
             return nil
         }
@@ -110,12 +116,15 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case 0:
+            let chatRoomViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ChatRoomViewController") as! ChatRoomViewController
+            chatRoomViewController.messages = makeNormalConversation()
+            self.navigationController?.pushViewController(chatRoomViewController, animated: true)
+        case 1:
             switch indexPath.row {
             case 0:
-                let chatView = ChatRoomViewController()
-                chatView.messages = makeNormalConversation()
-                let chatNavigationController = UINavigationController(rootViewController: chatView)
-                presentViewController(chatNavigationController, animated: true, completion: nil)
+                let chatRoomViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ChatRoomViewController") as! ChatRoomViewController
+                chatRoomViewController.messages = makeNormalConversation()
+                self.navigationController?.pushViewController(chatRoomViewController, animated: true)
             case 1:
                 let chatView = ChatRoomViewController()
                 chatView.messages = makeGroupConversation()
@@ -124,7 +133,7 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
             default:
                 return
             }
-        case 1:
+        case 2:
             switch indexPath.row {
             case 0:
                 self.presentViewController(UINavigationController(rootViewController: SettingsTableViewController()), animated: true, completion: nil)
@@ -134,6 +143,8 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
         default:
             return
         }
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.setSelected(false, animated: true)
     }
     
     func tabBarDidSelectExtraRightItem(tabBar: YALFoldingTabBar!) {
@@ -143,6 +154,60 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
         self.navigationController?.pushViewController(selectChatFriendsViewController, animated: true)
 
     }
+    
+    func configureRefreshControl() {
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl!.addTarget(self, action: #selector(FriendsCollectionViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(self.refreshControl!)
+        self.refreshControl?.endRefreshing()
+    }
+    
+    func refresh() {
+        loadChatRooms()
+        self.refreshControl?.endRefreshing()
+    }
+    
+    func loadChatRooms() {
+        AlertController.sharedInstance.startNormalActivityIndicator(self)
+        User.currentUser.chatRooms.removeAll()
+        let chatRoomsRelation = PFUser.currentUser()!.relationForKey("chatRooms")
+        let chatRoomsQuery = chatRoomsRelation.query()
+        chatRoomsQuery.findObjectsInBackgroundWithBlock({ (chatRooms, error) -> Void in
+            if let chatRooms = chatRooms {
+                if (chatRooms.isEmpty) {
+                    self.tableView.reloadData()
+                    AlertController.sharedInstance.stopNormalActivityIndicator()
+                }
+                
+                for chatRoom in chatRooms {
+//                    let usersRelation = chatRoom.relationForKey("users")
+//                    let usersQuery = usersRelation.query()
+//                    usersQuery.findObjectsInBackgroundWithBlock({ (users, error) in
+//                        
+//                    })
+                    let newChatRoom = ChatRoom(chatRoom: chatRoom)
+                    User.currentUser.chatRooms.append(newChatRoom)
+                    // get image data
+                    if let chatRoomImage = chatRoom["chatRoomImage"] {
+                        let imageFile = chatRoomImage as! PFFile
+                        imageFile.getDataInBackgroundWithBlock { (result, error) -> Void in
+                            if let imageData = result {
+                                newChatRoom.chatRoomImage = UIImage(data: imageData)!
+                            }
+                            self.tableView.reloadData()
+                        }
+                    }
+                    
+                }
+                self.tableView.reloadData()
+                AlertController.sharedInstance.stopNormalActivityIndicator()
+            } else {
+                AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
+            }
+        })
+    }
+
     
 
     

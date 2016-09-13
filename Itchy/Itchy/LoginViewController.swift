@@ -117,7 +117,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         PFFacebookUtils.logInInBackgroundWithReadPermissions(permission) { (user, error) -> Void in
             if let user = user {
                 self.getFBUserInfo({
-                    let currentUser = User(user: PFUser.currentUser()!)
+                    let currentUser = User(user: user)
                     User.currentUser = currentUser
                     // load user image
                     if let profileImage = user["profileImage"] {

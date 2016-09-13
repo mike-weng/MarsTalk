@@ -21,28 +21,16 @@ class ChatRoomViewController: JSQMessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "ChatRoom"
-        self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
-        self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
-        // Setup navigation
-        setupBackButton()
-        
-        /**
-         *  Override point:
-         *
-         *  Example of how to cusomize the bubble appearence for incoming and outgoing messages.
-         *  Based on the Settings of the user display two differnent type of bubbles.
-         *
-         */
         
         if defaults.boolForKey(Setting.removeBubbleTails.rawValue) {
             // Make taillessBubbles
             incomingBubble = JSQMessagesBubbleImageFactory(bubbleImage: UIImage.jsq_bubbleCompactTaillessImage(), capInsets: UIEdgeInsetsZero, layoutDirection: UIApplication.sharedApplication().userInterfaceLayoutDirection).incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
-            outgoingBubble = JSQMessagesBubbleImageFactory(bubbleImage: UIImage.jsq_bubbleCompactTaillessImage(), capInsets: UIEdgeInsetsZero, layoutDirection: UIApplication.sharedApplication().userInterfaceLayoutDirection).outgoingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
+            outgoingBubble = JSQMessagesBubbleImageFactory(bubbleImage: UIImage.jsq_bubbleCompactTaillessImage(), capInsets: UIEdgeInsetsZero, layoutDirection: UIApplication.sharedApplication().userInterfaceLayoutDirection).outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
         }
         else {
             // Bubbles with tails
             incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
-            outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
+            outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
         }
         
         /**
@@ -53,14 +41,14 @@ class ChatRoomViewController: JSQMessagesViewController {
             collectionView?.collectionViewLayout.incomingAvatarViewSize = .zero
             collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
         } else {
-            collectionView?.collectionViewLayout.incomingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault, height:kJSQMessagesCollectionViewAvatarSizeDefault )
-            collectionView?.collectionViewLayout.outgoingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault, height:kJSQMessagesCollectionViewAvatarSizeDefault )
+            collectionView?.collectionViewLayout.incomingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault + 5, height:kJSQMessagesCollectionViewAvatarSizeDefault + 5)
+            collectionView?.collectionViewLayout.outgoingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault + 5, height:kJSQMessagesCollectionViewAvatarSizeDefault + 5)
         }
         
         // Show Button to simulate incoming messages
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.jsq_defaultTypingIndicatorImage(), style: .Plain, target: self, action: #selector(receiveMessagePressed))
         
-        // This is a beta feature that mostly works but to make things more stable it is diabled.
+        // This is a beta feature that mostly works but to make things more stable it is disabled.
         collectionView?.collectionViewLayout.springinessEnabled = false
         
         automaticallyScrollsToMostRecentMessage = true
@@ -71,25 +59,15 @@ class ChatRoomViewController: JSQMessagesViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "BackIcon"), index: 1)
-
+        self.appDelegate.tabBarController.tabBarView.hidden = true
     }
     
-    func setupBackButton() {
-        let backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.leftBarButtonItem = backButton
-    }
-    func backButtonTapped() {
-        dismissViewControllerAnimated(true, completion: nil)
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.appDelegate.tabBarController.tabBarView.hidden = false
     }
     
     func receiveMessagePressed(sender: UIBarButtonItem) {
-        /**
-         *  DEMO ONLY
-         *
-         *  The following is simply to simulate received messages for the demo.
-         *  Do not actually do this.
-         */
         
         /**
          *  Show the typing indicator to be shown

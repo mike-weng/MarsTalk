@@ -44,6 +44,8 @@ class FriendsCollectionViewCell: UICollectionViewCell, CellInterface {
         backgroundGradientView.alpha = transitionProgress <= 0.5 ? 1 - transitionProgress : transitionProgress
         nameListLabel.alpha = 1 - transitionProgress
         statisticLabel.alpha = 1 - transitionProgress
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width / 2
+        avatarImageView.clipsToBounds = true
     }
     
     func setupListLayoutConstraints(transitionProgress: CGFloat, cellWidth: CGFloat) {
@@ -54,6 +56,8 @@ class FriendsCollectionViewCell: UICollectionViewCell, CellInterface {
         backgroundGradientView.alpha = transitionProgress <= 0.5 ? 1 - transitionProgress : transitionProgress
         nameListLabel.alpha = transitionProgress
         statisticLabel.alpha = transitionProgress
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width / 2
+        avatarImageView.clipsToBounds = true
     }
     
     override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {

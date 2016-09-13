@@ -131,6 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         PFUser.enableAutomaticUser()
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         
         application.statusBarHidden = false
         application.statusBarStyle = .LightContent

@@ -51,14 +51,15 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         addFriendMenu.mainView.hidden = false
+        addFriendMenu.hideRightGooeyMenu()
         addFriendMenu.showRightGooeyMenu()
         self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "RotateIcon"), index: 0)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        addFriendMenu.hideRightGooeyMenu()
         addFriendMenu.mainView.hidden = true
+        addFriendMenu.hideRightGooeyMenu()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -121,6 +122,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         selectedIndexPath = indexPath
         let detailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
+        self.appDelegate.tabBarController.tabBarView.swapExtraLeftTabBarItem()
         self.navigationController?.pushViewController(detailViewController, animated: true)
         self.collectionView.deselectItemAtIndexPath(indexPath, animated: true)
     }
@@ -219,6 +221,7 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
         default:
             print("nono")
         }
+        self.appDelegate.tabBarController.tabBarView.swapExtraLeftTabBarItem()
     }
     
     func loadFriendsList() {

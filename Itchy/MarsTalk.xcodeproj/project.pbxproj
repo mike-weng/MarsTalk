@@ -11,6 +11,7 @@
 		27002D091D425D0B0097A54A /* SearchIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27002D081D425D0B0097A54A /* SearchIDViewController.swift */; };
 		27012F291D265CCE00D21507 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27012F281D265CCE00D21507 /* fontawesome-webfont.ttf */; };
 		2720E4B61D2A513900956E54 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720E4B51D2A513900956E54 /* KeyboardController.swift */; };
+		272862371D8475600057487A /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272862361D8475600057487A /* ChatRoom.swift */; };
 		2749D3671D40DA480072BCEC /* FriendsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2749D3661D40DA480072BCEC /* FriendsCollectionViewCell.xib */; };
 		2749D3691D40DB2F0072BCEC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2749D3681D40DB2F0072BCEC /* User.swift */; };
 		2749D36B1D40DB410072BCEC /* CellInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2749D36A1D40DB410072BCEC /* CellInterface.swift */; };
@@ -59,6 +60,7 @@
 		27002D081D425D0B0097A54A /* SearchIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchIDViewController.swift; sourceTree = "<group>"; };
 		27012F281D265CCE00D21507 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fontawesome-webfont.ttf"; path = "Resources/fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		2720E4B51D2A513900956E54 /* KeyboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
+		272862361D8475600057487A /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		27305D4B1D23BCBD003C884C /* TextFieldEffects.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TextFieldEffects.framework; path = "Pods/../build/Debug-iphoneos/TextFieldEffects/TextFieldEffects.framework"; sourceTree = "<group>"; };
 		27305D4D1D23BCF9003C884C /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "Pods/../build/Debug-iphoneos/Bolts/Bolts.framework"; sourceTree = "<group>"; };
 		27305D4E1D23BCF9003C884C /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "Pods/../build/Debug-iphoneos/CocoaLumberjack/CocoaLumberjack.framework"; sourceTree = "<group>"; };
@@ -150,8 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				27CC4BD81D6CDB2300D77ECB /* ChatsTableViewController.swift */,
-				27CC4BD61D6CDB2300D77ECB /* ChatRoomViewController.swift */,
 				2769CAF61D7C653D003000FC /* SelectChatFriendsViewController.swift */,
+				27CC4BD61D6CDB2300D77ECB /* ChatRoomViewController.swift */,
 				27CC4BEA1D6CDD0A00D77ECB /* SettingsTableViewController.swift */,
 			);
 			name = ChatsViewController;
@@ -175,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				2749D3681D40DB2F0072BCEC /* User.swift */,
+				272862361D8475600057487A /* ChatRoom.swift */,
 				27CC4BD71D6CDB2300D77ECB /* Conversation.swift */,
 				27CC4BD51D6CDB2300D77ECB /* DemoConversation.swift */,
 				27D4E81F1D40D7880017A881 /* FriendsCollectionViewCell.swift */,
@@ -531,6 +534,7 @@
 				27E3D4E91D22A19500D2C5E2 /* AppDelegate.swift in Sources */,
 				27A2A7661D4410BD009E33DD /* ProfileImageCollectionViewCell.swift in Sources */,
 				27D2BA1C1D3E239B00706600 /* AlertController.swift in Sources */,
+				272862371D8475600057487A /* ChatRoom.swift in Sources */,
 				2769CAF71D7C653D003000FC /* SelectChatFriendsViewController.swift in Sources */,
 				2765114F1D3FEAF300A2C4F2 /* DetailViewController.swift in Sources */,
 			);

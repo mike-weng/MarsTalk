@@ -84,6 +84,7 @@ class DetailViewController: UIViewController, RMPZoomTransitionAnimating, RMPZoo
     }
     
     func transitionDestinationImageViewFrame() -> CGRect {
+        
         let width: CGFloat = CGRectGetWidth(self.mainImageView.frame)
         var frame: CGRect = self.mainImageView.frame
         frame.size.width = width
@@ -92,9 +93,13 @@ class DetailViewController: UIViewController, RMPZoomTransitionAnimating, RMPZoo
     
     func zoomTransitionAnimator(animator: RMPZoomTransitionAnimator!, didCompleteTransition didComplete: Bool, animatingSourceImageView imageView: UIImageView!) {
         self.mainImageView.image = imageView.image;
+        self.mainImageView.layer.cornerRadius = self.mainImageView.frame.size.width / 2.0;
+        self.mainImageView.clipsToBounds = true
+
     }
     func tabBarDidSelectExtraLeftItem(tabBar: YALFoldingTabBar!) {
         self.navigationController?.popViewControllerAnimated(true)
+        tabBar.swapExtraLeftTabBarItem()
         tabBar.setExtraLeftTabBarButtonImage(UIImage(named: "RotateIcon"), index: 1)
     }
     

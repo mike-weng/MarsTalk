@@ -70,8 +70,11 @@ static const NSTimeInterval kBackwardCompleteAnimationDuration = 0.18;
                               delay:0
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
+                             
                              sourceImageView.frame = [self.destinationTransition transitionDestinationImageViewFrame];
                              sourceImageView.transform = CGAffineTransformMakeScale(1.02, 1.02);
+                             sourceImageView.layer.cornerRadius = sourceImageView.frame.size.width / 2.0f;
+                             sourceImageView.clipsToBounds = YES;
                              alphaView.alpha = 0.9;
                          }
                          completion:^(BOOL finished) {
@@ -103,7 +106,10 @@ static const NSTimeInterval kBackwardCompleteAnimationDuration = 0.18;
                               delay:0
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
+                             
                              sourceImageView.frame = [self.destinationTransition transitionDestinationImageViewFrame];
+                             sourceImageView.layer.cornerRadius = sourceImageView.frame.size.width / 2.0f;
+                             sourceImageView.clipsToBounds = YES;
                              alphaView.alpha = 0;
                          }
                          completion:^(BOOL finished) {

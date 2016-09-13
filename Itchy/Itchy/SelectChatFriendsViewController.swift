@@ -13,16 +13,18 @@ import FoldingTabBar
 
 class SelectChatFriendsViewController: UIViewController,  YALTabBarDelegate{
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-
+    @IBOutlet weak var tableView: UITableView!
+    var selectedUsers: [User] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tableView.allowsMultipleSelection = true
         // Do any additional setup after loading the view.
     }
     
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        selectedUsers = []
         self.navigationItem.hidesBackButton = true
         self.appDelegate.tabBarController.tabBarView.setExtraRightTabBarButtonImage(UIImage(named: "DoneIcon"), index: 1)
         self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "BackIcon"), index: 1)
@@ -33,7 +35,72 @@ class SelectChatFriendsViewController: UIViewController,  YALTabBarDelegate{
         tabBar.swapExtraRightTabBarItem()
         self.navigationController?.popViewControllerAnimated(true)
     }
- 
+    
+    func tabBarDidSelectExtraRightItem(tabBar: YALFoldingTabBar!) {
+        AlertController.sharedInstance.startNormalActivityIndicator(self)
+        tabBar.swapExtraLeftTabBarItem()
+        tabBar.swapExtraRightTabBarItem()
+        
+        if let indexPaths = tableView.indexPathsForSelectedRows {
+            var channel = ""
+            var userIDs: [String] = []
+            for indexPath in indexPaths {
+                let selectedFriend = User.currentUser.friendList[indexPath.row]
+                channel = channel + selectedFriend.userID
+                userIDs.append(selectedFriend.userID)
+                selectedUsers.append(selectedFriend)
+            }
+            channel = channel + User.currentUser.userID
+            userIDs.append(User.currentUser.userID)
+            selectedUsers.append(User.currentUser)
+            
+            let newChatRoom = ChatRoom(users: selectedUsers, chatRoomChannel: channel)
+            let chatRoomViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ChatRoomViewController") as! ChatRoomViewController
+            
+            if newChatRoom.chatExistsIn(User.currentUser.chatRooms) {
+                // open up the old chat room
+                chatRoomViewController.messages = makeNormalConversation()
+                self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.pushViewController(chatRoomViewController, animated: true)
+                AlertController.sharedInstance.stopNormalActivityIndicator()
+            } else {
+                let chatRoom = PFObject(className: "ChatRoom")
+                chatRoom.setValue(channel, forKey: "channel")
+                chatRoom.setObject(userIDs, forKey: "userIDs")
+                if let imageData = UIImagePNGRepresentation(newChatRoom.chatRoomImage) {
+                    if let file = PFFile(data: imageData) {
+                        chatRoom.setObject(file, forKey: "chatRoomImage")
+                    }
+                }
+                let usersRelation = chatRoom.relationForKey("users")
+                for user in selectedUsers {
+                    usersRelation.addObject(user.pfUser)
+                }
+                
+                chatRoom.saveInBackgroundWithBlock { (success, error) -> Void in
+                    if success {
+                        let chatRoomRelation = PFUser.currentUser()!.relationForKey("chatRooms")
+                        chatRoomRelation.addObject(chatRoom)
+                        PFUser.currentUser()!.saveInBackgroundWithBlock { (success, error) -> Void in
+                            if success {
+//                                User.currentUser.chatRooms.append(newChatRoom)
+                                chatRoomViewController.messages = makeNormalConversation()
+                                self.navigationController?.popViewControllerAnimated(true)
+                                self.navigationController?.pushViewController(chatRoomViewController, animated: true)
+                            } else {
+                                AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
+                            }
+                        }
+                    } else {
+                        AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
+                    }
+                    AlertController.sharedInstance.stopNormalActivityIndicator()
+                }
+            }
+        } else {
+            AlertController.sharedInstance.showOneActionAlert("Oops", body: "You didn't select any friends", actionTitle: "Retry", viewController: self)
+        }
+    }
 }
 
 extension SelectChatFriendsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -55,103 +122,24 @@ extension SelectChatFriendsViewController: UITableViewDelegate, UITableViewDataS
         cell.textLabel?.text = friend.firstName
         cell.detailTextLabel?.text = friend.userID
         cell.imageView!.image = friend.profileImage
+        cell.imageView!.layer.cornerRadius = 10
+        cell.imageView!.clipsToBounds = true
         
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-//        let chatRoomViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ChatRoomViewController") as! ChatRoomViewController
-//        let chosenUser = User.currentUser.friendList[indexPath.row] as! User
-//        let previousViewController = getPreviousViewController() as! ChatsViewController
-//        
-//        if chatExists(previousViewController.chats, user1: Convenience.currentUser, user2: chosenUser) {
-//            
-//            self.dismissViewControllerAnimated(true) { () -> Void in
-//                chatRoomViewController.user = chosenUser
-//                
-//                previousViewController.navigationController?.pushViewController(chatRoomViewController, animated: true)
-//            }
-//            
-//        } else {
-//            let chat = PFObject(className: "Chat")
-//            let channelName = Convenience.currentUser.username! + chosenUser.username!
-//            chat.setValue(channelName, forKey: "Channel")
-//            chat.setObject(Convenience.currentUser, forKey: "FromUser")
-//            chat.setObject(chosenUser, forKey: "ToUser")
-//            
-//            chat.saveInBackgroundWithBlock { (success, error) -> Void in
-//                if success {
-//                    let relation = Convenience.currentUser.relationForKey("Chat")
-//                    relation.addObject(chat)
-//                    Convenience.currentUser.saveInBackgroundWithBlock { (success, error) -> Void in
-//                        if success {
-//                            self.dismissViewControllerAnimated(true) { () -> Void in
-//                                chatRoomViewController.user = chosenUser
-//                            }
-//                        } else {
-//                            Convenience.showAlert(self, title: "Error", message: error!.userInfo["error"] as! String)
-//                        }
-//                    }
-//                } else {
-//                    Convenience.showAlert(self, title: "Error", message: error!.userInfo["error"] as! String)
-//                }
-//            }
-//            
-//        }
+        let cell = tableView.cellForRowAtIndexPath(indexPath)!
+        cell.accessoryType = .Checkmark
         
     }
     
-//    func getPreviousViewController() -> UIViewController {
-//        let tabBarController = self.presentingViewController as! UITabBarController
-//        let navigationController = tabBarController.selectedViewController as! UINavigationController
-//        let previousViewController = navigationController.viewControllers.first as! ChatsViewController
-//        return previousViewController
-//    }
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)!
+        cell.accessoryType = .None
+    }
     
-//    func chatExists(chats: [PFObject], user1: PFUser, user2: PFUser) -> Bool {
-//        for chat in chats {
-//            let fromUser = chat["FromUser"] as! PFUser
-//            let toUser = chat["ToUser"] as! PFUser
-//            if ((fromUser == user1) && (toUser == user2)) || ((fromUser == user2) && (toUser == user1)) {
-//                return true
-//            }
-//        }
-//        return false
-//    }
     
-    /*
-     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
     
-    /*
-     // Override to support editing the table view.
-     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     if editingStyle == .Delete {
-     // Delete the row from the data source
-     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-     } else if editingStyle == .Insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
     
 }

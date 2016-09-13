@@ -80,6 +80,7 @@ class SearchIDViewController: UIViewController, YALTabBarDelegate, UISearchBarDe
         })
     }
     func tabBarDidSelectExtraLeftItem(tabBar: YALFoldingTabBar!) {
+        tabBar.swapExtraLeftTabBarItem()
         self.navigationController?.popViewControllerAnimated(true)
     }
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
@@ -122,6 +123,8 @@ class SearchIDViewController: UIViewController, YALTabBarDelegate, UISearchBarDe
                     let imageFile = profileImage as! PFFile
                     imageFile.getDataInBackgroundWithBlock { (result, error) -> Void in
                         if let imageData = result {
+                            self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
+                            self.profileImageView.clipsToBounds = true
                             self.profileImageView.image = UIImage(data: imageData)
                         } else {
                             AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Ok", viewController: self)
