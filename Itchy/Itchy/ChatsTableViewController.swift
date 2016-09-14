@@ -22,12 +22,10 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
         self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        configureRefreshControl()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.loadChatRooms()
         self.appDelegate.tabBarController.tabBarView.setExtraRightTabBarButtonImage(UIImage(named: "NewChatIcon"), index: 1)
         self.appDelegate.tabBarController.tabBarView.setExtraLeftTabBarButtonImage(UIImage(named: "SearchIcon"), index: 1)
         
@@ -157,37 +155,26 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
 
     }
     
-    func configureRefreshControl() {
-        self.refreshControl = UIRefreshControl()
-        self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        self.refreshControl!.addTarget(self, action: #selector(FriendsCollectionViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
-        tableView.addSubview(self.refreshControl!)
-        self.refreshControl?.endRefreshing()
+    @IBAction func refresh(sender: UIRefreshControl) {
+        loadChatRooms()
+        sender.endRefreshing()
     }
     
-    func refresh() {
-        loadChatRooms()
-        self.refreshControl?.endRefreshing()
-    }
     
     func loadChatRooms() {
         AlertController.sharedInstance.startNormalActivityIndicator(self)
         User.currentUser.chatRooms.removeAll()
-        let chatRoomsRelation = PFUser.currentUser()!.relationForKey("chatRooms")
-        let chatRoomsQuery = chatRoomsRelation.query()
-        chatRoomsQuery.findObjectsInBackgroundWithBlock({ (chatRooms, error) -> Void in
+        let query = PFQuery(className: "ChatRoom")
+        query.whereKey("channel", containsString: User.currentUser.userID)
+        query.findObjectsInBackgroundWithBlock { (chatRooms, error) in
             if let chatRooms = chatRooms {
+                
                 if (chatRooms.isEmpty) {
                     self.tableView.reloadData()
                     AlertController.sharedInstance.stopNormalActivityIndicator()
                 }
                 
                 for chatRoom in chatRooms {
-//                    let usersRelation = chatRoom.relationForKey("users")
-//                    let usersQuery = usersRelation.query()
-//                    usersQuery.findObjectsInBackgroundWithBlock({ (users, error) in
-//                        
-//                    })
                     let newChatRoom = ChatRoom(chatRoom: chatRoom)
                     User.currentUser.chatRooms.append(newChatRoom)
                     // get image data
@@ -207,7 +194,10 @@ class ChatsTableViewController: UITableViewController, YALTabBarDelegate {
             } else {
                 AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
             }
-        })
+        }
+
+        
+        
     }
 
     

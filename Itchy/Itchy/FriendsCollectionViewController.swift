@@ -247,10 +247,11 @@ class FriendsCollectionViewController: UIViewController, UICollectionViewDelegat
                                 friend.profileImage = UIImage(data: imageData)!
                             }
                             self.collectionView.reloadData()
-                            AlertController.sharedInstance.stopNormalActivityIndicator()
                         }
                     }
                 }
+                self.collectionView.reloadData()
+                AlertController.sharedInstance.stopNormalActivityIndicator()
             } else {
                 AlertController.sharedInstance.showOneActionAlert("Error", body: error!.userInfo["error"] as! String, actionTitle: "Retry", viewController: self)
             }

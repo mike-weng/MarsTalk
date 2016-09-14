@@ -30,7 +30,9 @@ public class ChatRoom {
         chatRoomChannel = chatRoom.objectForKey("channel") as! String
         let userIDs = chatRoom.objectForKey("userIDs") as! [String]
         for id in userIDs {
-            for friend in User.currentUser.friendList {
+            var userList = User.currentUser.friendList
+            userList.append(User.currentUser)
+            for friend in userList {
                 if (id == friend.userID) {
                     users.append(friend)
                     break

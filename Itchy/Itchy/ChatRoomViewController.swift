@@ -8,8 +8,9 @@
 
 import UIKit
 import JSQMessagesViewController
+import PubNub
 
-class ChatRoomViewController: JSQMessagesViewController {
+class ChatRoomViewController: JSQMessagesViewController, PNObjectEventListener {
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var chatRoom: ChatRoom!
     var messages = [JSQMessage]()
@@ -21,13 +22,15 @@ class ChatRoomViewController: JSQMessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "ChatRoom"
+        self.loadMessages()
+        appDelegate.client!.addListener(self)
+        appDelegate.client!.subscribeToChannels([chatRoom.chatRoomChannel], withPresence: true)
         
         if defaults.boolForKey(Setting.removeBubbleTails.rawValue) {
             // Make taillessBubbles
             incomingBubble = JSQMessagesBubbleImageFactory(bubbleImage: UIImage.jsq_bubbleCompactTaillessImage(), capInsets: UIEdgeInsetsZero, layoutDirection: UIApplication.sharedApplication().userInterfaceLayoutDirection).incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
             outgoingBubble = JSQMessagesBubbleImageFactory(bubbleImage: UIImage.jsq_bubbleCompactTaillessImage(), capInsets: UIEdgeInsetsZero, layoutDirection: UIApplication.sharedApplication().userInterfaceLayoutDirection).outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
-        }
-        else {
+        } else {
             // Bubbles with tails
             incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
             outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
@@ -59,6 +62,7 @@ class ChatRoomViewController: JSQMessagesViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         self.appDelegate.tabBarController.tabBarView.hidden = true
     }
     
@@ -68,6 +72,10 @@ class ChatRoomViewController: JSQMessagesViewController {
     }
     
     func receiveMessagePressed(sender: UIBarButtonItem) {
+//        handleRecievedData((self.messages.last?.text)!)
+    }
+    
+    func handleRecievedData(fromUser: User, message: String) {
         
         /**
          *  Show the typing indicator to be shown
@@ -82,86 +90,85 @@ class ChatRoomViewController: JSQMessagesViewController {
         /**
          *  Copy last sent message, this will be the new "received" message
          */
-        var copyMessage = self.messages.last?.copy()
+//        var copyMessage = self.messages.last?.copy()
         
-        let user = chatRoom.users[0]
         
-        if (copyMessage == nil) {
-            copyMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, text: "First received!")
-        }
-            
-        var newMessage:JSQMessage!
-        var newMediaData:JSQMessageMediaData!
-        var newMediaAttachmentCopy:AnyObject?
         
-        if copyMessage!.isMediaMessage() {
-            /**
-             *  Last message was a media message
-             */
-            let copyMediaData = copyMessage!.media
-            
-            switch copyMediaData {
-            case is JSQPhotoMediaItem:
-                let photoItemCopy = (copyMediaData as! JSQPhotoMediaItem).copy() as! JSQPhotoMediaItem
-                photoItemCopy.appliesMediaViewMaskAsOutgoing = false
-                
-                newMediaAttachmentCopy = UIImage(CGImage: photoItemCopy.image!.CGImage!)
-                
-                /**
-                 *  Set image to nil to simulate "downloading" the image
-                 *  and show the placeholder view5017
-                 */
-                photoItemCopy.image = nil;
-                
-                newMediaData = photoItemCopy
-            case is JSQLocationMediaItem:
-                let locationItemCopy = (copyMediaData as! JSQLocationMediaItem).copy() as! JSQLocationMediaItem
-                locationItemCopy.appliesMediaViewMaskAsOutgoing = false
-                newMediaAttachmentCopy = locationItemCopy.location!.copy()
-                
-                /**
-                 *  Set location to nil to simulate "downloading" the location data
-                 */
-                locationItemCopy.location = nil;
-                
-                newMediaData = locationItemCopy;
-            case is JSQVideoMediaItem:
-                let videoItemCopy = (copyMediaData as! JSQVideoMediaItem).copy() as! JSQVideoMediaItem
-                videoItemCopy.appliesMediaViewMaskAsOutgoing = false
-                newMediaAttachmentCopy = videoItemCopy.fileURL!.copy()
-                
-                /**
-                 *  Reset video item to simulate "downloading" the video
-                 */
-                videoItemCopy.fileURL = nil;
-                videoItemCopy.isReadyToPlay = false;
-                
-                newMediaData = videoItemCopy;
-            case is JSQAudioMediaItem:
-                let audioItemCopy = (copyMediaData as! JSQAudioMediaItem).copy() as! JSQAudioMediaItem
-                audioItemCopy.appliesMediaViewMaskAsOutgoing = false
-                newMediaAttachmentCopy = audioItemCopy.audioData!.copy()
-                
-                /**
-                 *  Reset audio item to simulate "downloading" the audio
-                 */
-                audioItemCopy.audioData = nil;
-                
-                newMediaData = audioItemCopy;
-            default:
-                assertionFailure("Error: This Media type was not recognised")
-            }
-           
-
-            newMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, media: newMediaData)
-        }
-        else {
-            /**
-             *  Last message was a text message
-             */
-            
-            newMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, text: copyMessage!.text)
-        }
+//        if (copyMessage == nil) {
+//            copyMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, text: "First received!")
+//        }
+        
+        let newMessage:JSQMessage = JSQMessage(senderId: fromUser.userID, displayName: fromUser.firstName + " " + fromUser.lastName, text: message)
+//        var newMediaData:JSQMessageMediaData!
+//        var newMediaAttachmentCopy:AnyObject?
+        
+//        if copyMessage!.isMediaMessage() {
+//            /**
+//             *  Last message was a media message
+//             */
+//            let copyMediaData = copyMessage!.media
+//            
+//            switch copyMediaData {
+//            case is JSQPhotoMediaItem:
+//                let photoItemCopy = (copyMediaData as! JSQPhotoMediaItem).copy() as! JSQPhotoMediaItem
+//                photoItemCopy.appliesMediaViewMaskAsOutgoing = false
+//                
+//                newMediaAttachmentCopy = UIImage(CGImage: photoItemCopy.image!.CGImage!)
+//                
+//                /**
+//                 *  Set image to nil to simulate "downloading" the image
+//                 *  and show the placeholder view5017
+//                 */
+//                photoItemCopy.image = nil;
+//                
+//                newMediaData = photoItemCopy
+//            case is JSQLocationMediaItem:
+//                let locationItemCopy = (copyMediaData as! JSQLocationMediaItem).copy() as! JSQLocationMediaItem
+//                locationItemCopy.appliesMediaViewMaskAsOutgoing = false
+//                newMediaAttachmentCopy = locationItemCopy.location!.copy()
+//                
+//                /**
+//                 *  Set location to nil to simulate "downloading" the location data
+//                 */
+//                locationItemCopy.location = nil;
+//                
+//                newMediaData = locationItemCopy;
+//            case is JSQVideoMediaItem:
+//                let videoItemCopy = (copyMediaData as! JSQVideoMediaItem).copy() as! JSQVideoMediaItem
+//                videoItemCopy.appliesMediaViewMaskAsOutgoing = false
+//                newMediaAttachmentCopy = videoItemCopy.fileURL!.copy()
+//                
+//                /**
+//                 *  Reset video item to simulate "downloading" the video
+//                 */
+//                videoItemCopy.fileURL = nil;
+//                videoItemCopy.isReadyToPlay = false;
+//                
+//                newMediaData = videoItemCopy;
+//            case is JSQAudioMediaItem:
+//                let audioItemCopy = (copyMediaData as! JSQAudioMediaItem).copy() as! JSQAudioMediaItem
+//                audioItemCopy.appliesMediaViewMaskAsOutgoing = false
+//                newMediaAttachmentCopy = audioItemCopy.audioData!.copy()
+//                
+//                /**
+//                 *  Reset audio item to simulate "downloading" the audio
+//                 */
+//                audioItemCopy.audioData = nil;
+//                
+//                newMediaData = audioItemCopy;
+//            default:
+//                assertionFailure("Error: This Media type was not recognised")
+//            }
+//            
+//            
+//            newMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, media: newMediaData)
+//        } else {
+//            /**
+//             *  Last message was a text message
+//             */
+//            
+//            newMessage = JSQMessage(senderId: user.userID, displayName: user.firstName + " " + user.lastName, text: copyMessage!.text)
+//        }
         
         /**
          *  Upon receiving a message, you should:
@@ -174,40 +181,41 @@ class ChatRoomViewController: JSQMessagesViewController {
         self.messages.append(newMessage)
         self.finishReceivingMessageAnimated(true)
         
-        if newMessage.isMediaMessage {
-            /**
-             *  Simulate "downloading" media
-             */
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                /**
-                 *  Media is "finished downloading", re-display visible cells
-                 *
-                 *  If media cell is not visible, the next time it is dequeued the view controller will display its new attachment data
-                 *
-                 *  Reload the specific item, or simply call `reloadData`
-                 */
-                
-                switch newMediaData {
-                case is JSQPhotoMediaItem:
-                    (newMediaData as! JSQPhotoMediaItem).image = newMediaAttachmentCopy as? UIImage
-                    self.collectionView!.reloadData()
-                case is JSQLocationMediaItem:
-                    (newMediaData as! JSQLocationMediaItem).setLocation(newMediaAttachmentCopy as? CLLocation, withCompletionHandler: {
-                        self.collectionView!.reloadData()
-                    })
-                case is JSQVideoMediaItem:
-                    (newMediaData as! JSQVideoMediaItem).fileURL = newMediaAttachmentCopy as? NSURL
-                    (newMediaData as! JSQVideoMediaItem).isReadyToPlay = true
-                    self.collectionView!.reloadData()
-                case is JSQAudioMediaItem:
-                    (newMediaData as! JSQAudioMediaItem).audioData = newMediaAttachmentCopy as? NSData
-                    self.collectionView!.reloadData()
-                default:
-                    assertionFailure("Error: This Media type was not recognised")
-                }
-            }
-        }
+//        if newMessage.isMediaMessage {
+//            /**
+//             *  Simulate "downloading" media
+//             */
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+//                /**
+//                 *  Media is "finished downloading", re-display visible cells
+//                 *
+//                 *  If media cell is not visible, the next time it is dequeued the view controller will display its new attachment data
+//                 *
+//                 *  Reload the specific item, or simply call `reloadData`
+//                 */
+//                
+//                switch newMediaData {
+//                case is JSQPhotoMediaItem:
+//                    (newMediaData as! JSQPhotoMediaItem).image = newMediaAttachmentCopy as? UIImage
+//                    self.collectionView!.reloadData()
+//                case is JSQLocationMediaItem:
+//                    (newMediaData as! JSQLocationMediaItem).setLocation(newMediaAttachmentCopy as? CLLocation, withCompletionHandler: {
+//                        self.collectionView!.reloadData()
+//                    })
+//                case is JSQVideoMediaItem:
+//                    (newMediaData as! JSQVideoMediaItem).fileURL = newMediaAttachmentCopy as? NSURL
+//                    (newMediaData as! JSQVideoMediaItem).isReadyToPlay = true
+//                    self.collectionView!.reloadData()
+//                case is JSQAudioMediaItem:
+//                    (newMediaData as! JSQAudioMediaItem).audioData = newMediaAttachmentCopy as? NSData
+//                    self.collectionView!.reloadData()
+//                default:
+//                    assertionFailure("Error: This Media type was not recognised")
+//                }
+//            }
+//        }
     }
+    
     
     // MARK: JSQMessagesViewController method overrides
     override func didPressSendButton(button: UIButton, withMessageText text: String, senderId: String, senderDisplayName: String, date: NSDate) {
@@ -219,9 +227,71 @@ class ChatRoomViewController: JSQMessagesViewController {
          *  3. Call `finishSendingMessage`
          */
         
+        
+        
+        
         let message = JSQMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text)
         self.messages.append(message)
+        
+        
+        let messageDict: NSDictionary? = [
+            "message_text" : text,
+            "user_id" : User.currentUser.userID
+        ]
+        
+        let alertMsg = "message from " + User.currentUser.firstName + " " + User.currentUser.lastName
+        let payload = ["aps" : ["alert" : alertMsg]]
+        appDelegate.client!.publish(messageDict, toChannel: chatRoom.chatRoomChannel, mobilePushPayload: payload, storeInHistory: true, compressed: false, withCompletion: { (status) -> Void in
+            if !status.error {
+                // Message successfully published to specified channel.
+
+            } else {
+                
+                // Handle message publish error. Check 'category' property
+                // to find out possible reason because of which request did fail.
+                // Review 'errorData' property (which has PNErrorData data type) of status
+                // object to get additional information about issue.
+                //
+                // Request can be resent using: status.retry()
+                let errorMsg = status.error.description
+                AlertController.sharedInstance.showOneActionAlert("Sent Error", body: errorMsg, actionTitle: "Retry", viewController: self)
+            }
+            
+        })
         self.finishSendingMessageAnimated(true)
+    }
+    
+        
+    func client(client: PubNub, didReceiveMessage message: PNMessageResult) {
+        
+        // Handle new message stored in message.data.message
+        if message.data.actualChannel != nil {
+            // Message has been received on channel group stored in
+            // message.data.subscribedChannel
+            
+        } else {
+            
+            // Message has been received on channel stored in
+            // message.data.subscribedChannel
+        }
+        let messageDict = message.data.message as! NSDictionary
+        let text = messageDict["message_text"] as! String
+        let senderID = messageDict["user_id"] as! String
+        if senderID == User.currentUser.userID {
+            return
+        }
+        var sender: User!
+        for user in User.currentUser.friendList {
+            if senderID == user.userID {
+                sender = user
+                break
+            }
+        }
+        self.handleRecievedData(sender, message: text)
+//        print("Received message: \(message.data.message) on channel " +
+//            "\((message.data.actualChannel ?? message.data.subscribedChannel)!) at " +
+//            "\(message.data.timetoken)")
+        
     }
     
     override func didPressAccessoryButton(sender: UIButton) {
@@ -433,4 +503,46 @@ class ChatRoomViewController: JSQMessagesViewController {
         }
         return JSQMessagesAvatarImageFactory().avatarImageWithPlaceholder(UIImage(named: "AvatarPlaceholder")!)
     }
+    
+    func loadMessages() {
+        appDelegate.client?.historyForChannel(chatRoom.chatRoomChannel, start: nil, end: nil, limit: 100, reverse: false, includeTimeToken: true, withCompletion: { (result, status) -> Void in
+            if status == nil {
+                for messageDict in result!.data.messages {
+                    let messageDict = messageDict as! NSDictionary
+                    if let messagePayload = messageDict["message"] as? NSDictionary {
+                        let text = messagePayload["message_text"] as! String
+                        let senderID = messagePayload["user_id"] as! String
+                        var sender: User!
+                        for user in self.chatRoom.users {
+                            print(user.userID)
+                            print(senderID)
+
+                            if senderID == user.userID {
+                                sender = user
+                                break
+                            }
+                        }
+                        let newMessage:JSQMessage = JSQMessage(senderId: sender.userID, displayName: sender.firstName + " " + sender.lastName, text: text)
+                        self.messages.append(newMessage)
+                    }
+                }
+                self.collectionView!.reloadData()
+                // Handle downloaded history using:
+                //   result.data.start - oldest message time stamp in response
+                //   result.data.end - newest message time stamp in response
+                //   result.data.messages - list of messages
+            }
+            else {
+                
+                // Handle message history download error. Check 'category' property
+                // to find out possible reason because of which request did fail.
+                // Review 'errorData' property (which has PNErrorData data type) of status
+                // object to get additional information about issue.
+                //
+                // Request can be resent using: status.retry()
+                AlertController.sharedInstance.showOneActionAlert("Sent Error", body: (status?.errorData.information)!, actionTitle: "Retry", viewController: self)
+            }
+        })
+    }
+
 }
