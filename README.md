@@ -13,7 +13,7 @@ MarsTalk allows you to at least connect and talk to a new person everyday. Your 
 1. git clone https://github.com/mmmk84512/MarsTalk
 2. open MarsTalk.xworkspace
 
-## Usage
+## Features
 4 tabs in total
 
 Friends Tab:
