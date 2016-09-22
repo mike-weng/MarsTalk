@@ -14,8 +14,14 @@ MarsTalk allows you to at least connect and talk to a new person everyday. Your 
 2. open MarsTalk.xworkspace
 
 ## Features
-4 tabs in total
+- Signup/Login with email
+- Signup/Login with Facebook account
+- Add/Search users
+- Start a one-on-one chat with another user
+- Start a group chat with multiple users
+- Personal profile editing
 
+## Project Overview
 ### Friends Tab
 - Consists of all the MarsTalk users you've added
 - Bottom right button to add friends (search/QR code/shake)
